@@ -1,0 +1,13 @@
+D:\Projects\CMS\CMSService\bin\Debug\CMSService.dll.config
+D:\Projects\CMS\CMSService\bin\Debug\CMSService.dll
+D:\Projects\CMS\CMSService\bin\Debug\CMSService.pdb
+D:\Projects\CMS\CMSService\bin\Debug\CMSRepository.dll
+D:\Projects\CMS\CMSService\bin\Debug\EntityFramework.dll
+D:\Projects\CMS\CMSService\bin\Debug\CMSRepository.pdb
+D:\Projects\CMS\CMSService\bin\Debug\CMSRepository.dll.config
+D:\Projects\CMS\CMSService\bin\Debug\EntityFramework.xml
+D:\Projects\CMS\CMSService\obj\Debug\CMSService.csprojAssemblyReference.cache
+D:\Projects\CMS\CMSService\obj\Debug\CMSService.csproj.CoreCompileInputs.cache
+D:\Projects\CMS\CMSService\obj\Debug\CMSService.csproj.CopyComplete
+D:\Projects\CMS\CMSService\obj\Debug\CMSService.dll
+D:\Projects\CMS\CMSService\obj\Debug\CMSService.pdb

@@ -1,0 +1,363 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/*-----------------------------------
+ * Animation
+ *-----------------------------------*/
+.animated {
+    -webkit-animation-duration: 1.2s;
+    animation-duration: 1.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-timing-function: ease;
+    animation-timing-function: ease;
+}
+
+
+@keyframes bounce {
+    0%,20%,50%,80%,100% {
+        transform: translateY(0)
+    }
+
+    40% {
+        transform: translateY(-20px)
+    }
+
+    60% {
+        transform: translateY(-8px)
+    }
+}
+
+.bounce {
+    -webkit-animation-name: bounce;
+    animation-name: bounce
+}
+
+@-webkit-keyframes bounce {
+    0%,20%,50%,80%,100% {
+        -webkit-transform: translateY(0)
+    }
+
+    40% {
+        -webkit-transform: translateY(-20px)
+    }
+
+    60% {
+        -webkit-transform: translateY(-8px)
+    }
+}
+
+@keyframes bounceIn {
+    0%,100%,20%,40%,60%,80% {
+        -webkit-transition-timing-function: cubic-bezier(0.215,.61,.355,1);
+        transition-timing-function: cubic-bezier(0.215,.61,.355,1)
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3,.3,.3);
+        -ms-transform: scale3d(.3,.3,.3);
+        transform: scale3d(.3,.3,.3)
+    }
+
+    20% {
+        -webkit-transform: scale3d(1.1,1.1,1.1);
+        -ms-transform: scale3d(1.1,1.1,1.1);
+        transform: scale3d(1.1,1.1,1.1)
+    }
+
+    40% {
+        -webkit-transform: scale3d(.9,.9,.9);
+        -ms-transform: scale3d(.9,.9,.9);
+        transform: scale3d(.9,.9,.9)
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03,1.03,1.03);
+        -ms-transform: scale3d(1.03,1.03,1.03);
+        transform: scale3d(1.03,1.03,1.03)
+    }
+
+    80% {
+        -webkit-transform: scale3d(.97,.97,.97);
+        -ms-transform: scale3d(.97,.97,.97);
+        transform: scale3d(.97,.97,.97)
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale3d(1,1,1);
+        -ms-transform: scale3d(1,1,1);
+        transform: scale3d(1,1,1)
+    }
+}
+
+.bounceIn {
+    -webkit-animation-name: bounceIn;
+    animation-name: bounceIn;
+    -webkit-animation-duration: .75s;
+    animation-duration: .75s
+}
+
+@-webkit-keyframes bounceIn {
+    0%,100%,20%,40%,60%,80% {
+        -webkit-transition-timing-function: cubic-bezier(0.215,.61,.355,1);
+        transition-timing-function: cubic-bezier(0.215,.61,.355,1)
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3,.3,.3);
+        transform: scale3d(.3,.3,.3)
+    }
+
+    20% {
+        -webkit-transform: scale3d(1.1,1.1,1.1);
+        transform: scale3d(1.1,1.1,1.1)
+    }
+
+    40% {
+        -webkit-transform: scale3d(.9,.9,.9);
+        transform: scale3d(.9,.9,.9)
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03,1.03,1.03);
+        transform: scale3d(1.03,1.03,1.03)
+    }
+
+    80% {
+        -webkit-transform: scale3d(.97,.97,.97);
+        transform: scale3d(.97,.97,.97)
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale3d(1,1,1);
+        transform: scale3d(1,1,1)
+    }
+}
+
+/* error panel with close */
+.show_error {
+    background: #FCF3F7 url(/images/icons/error.png) no-repeat 5px 50%;
+    background-size: 20px auto;
+    border-radius: 2px;
+    color: #8A1F11;
+    display: none;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    padding: 4px 24px 5px 30px;
+    line-height: 20px;
+    position: relative;
+}
+
+    .show_error.loading,
+    .loading {
+        background: #FCF3F7 url(/images/icons/loader_small.gif) no-repeat 3px;
+        padding-left: 25px;
+    }
+
+.loading {
+    background-color: transparent;
+}
+
+h2.loading {
+    background-position: 27% 0;
+}
+
+
+/*-----------------------------------
+ * Paging
+ *-----------------------------------*/
+.paging {
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+    .paging a,
+    .paging .current,
+    .paging .disabled {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        color: #333;
+        display: inline-block;
+        margin: 0 3px 3px 0;
+        line-height: 30px;
+        padding: 0 12px;
+        text-decoration: none;
+    }
+
+        .paging a:hover,
+        .paging .current {
+            background: #e8e8e8;
+            border-color: #e8e8e8;
+        }
+
+    .paging .current {
+        background: #4e6cef;
+        border-color: #4e6cef;
+        color: #fff;
+    }
+
+    .paging .disabled {
+        display: none;
+    }
+
+    .paging.small a,
+    .paging.small .disabled,
+    .paging.small .current {
+        font-size: 11px;
+        line-height: 20px;
+        margin-right: 2px;
+        padding: 0 8px;
+    }
+
+/*-----------------------
+  Custom Table
+ -----------------------*/
+th {
+    font-weight: 700
+}
+
+.disabled,
+.table.disabled tr,
+.table tr.disabled td {
+    cursor: not-allowed;
+    filter: alpha(opacity=30);
+    opacity: .3;
+}
+
+    .table tr.disabled td.action {
+        cursor: default;
+        filter: alpha(opacity=100);
+        opacity: 1;
+    }
+
+.disabled,
+.table.disabled tr {
+    filter: alpha(opacity=50);
+    opacity: 1;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom: 0;
+}
+
+table.responsive-table th {
+    background: #eee;
+}
+
+table.responsive-table td.action .btn.fix {
+    margin-bottom: 1px;
+}
+
+@media (max-width:480px) {
+    /*-----------------------
+      Responsive Table
+      -----------------------*/
+    table.responsive-table thead,
+    table.responsive-table th,
+    table.responsive-table.nohead td:nth-child(1):before,
+    table.responsive-table.nohead td:nth-child(2):before {
+        display: none;
+    }
+
+    table.display td {
+        padding: .5em;
+    }
+
+    table.responsive-table {
+        border: 0;
+    }
+
+    table.stripe tr:nth-child(2n),
+    table.stripe tr:nth-child(2n+1) {
+        background: #fff;
+    }
+
+    table.responsive-table td:before {
+        content: attr(data-title);
+        position: absolute;
+        left: 0;
+        padding-left: 8px;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 31%;
+    }
+
+    table.responsive-table td {
+        background: linear-gradient(to left,#fff 69%,#f1f1f1 0%);
+        padding: 8px 8px 8px 32% !important;
+        border-width: 0 0 1px !important;
+    }
+
+    table.responsive-table.nohead td {
+        padding-left: 4%;
+    }
+
+    table.responsive-table tr,
+    table.responsive-table td {
+        display: block;
+    }
+
+    table.responsive-table tr {
+        position: relative;
+        margin-bottom: .5em;
+    }
+
+    table.responsive-table td:first-child {
+        background: #eaeaea;
+        border-top: 0;
+    }
+
+    table.responsive-table td.action {
+        background: 0 0;
+        padding: 8px !important;
+    }
+}
+
+@media (max-width:375px) {
+    /*-----------------------
+      Responsive Table
+      -----------------------*/
+    table.responsive-table .btn {
+        display: block;
+        width: 100%;
+    }
+
+    table.responsive-table .btn_auto_width {
+        width: auto;
+    }
+
+    table.responsive-table .btn + .btn {
+        margin-top: 5px;
+    }
+}
+
+.imagePreview {
+    width: 175px;
+    height: 175px;
+    background-position: center center;
+    background: url(/img/undraw_profile.svg);
+    background-color: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: inline-block;
+    box-shadow: 0px -3px 6px 2px rgba(0,0,0,0.2);
+}

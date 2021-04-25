@@ -1,0 +1,52 @@
+﻿@using CMSWeb.Language
+@using MvcPaging
+@model IPagedList<CMSWeb.Models.UserModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h1 class="h3 mb-2 text-gray-800">@Resource.ListUser</h1>
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "form-inline text-right", id = "user_search_form", onsubmit = "return !1" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group mx-sm-2 mr-2 my-1">
+                <input type="search" class="form-control input-sm" name="query" value="@ViewBag.Query" placeholder="@UserResource.UserSearch" maxlength="50">
+            </div>
+
+            <div class="form-group mx-sm-1 mr-2 my-1">
+                <select class="form-control" id="status" name="status">
+                    <option>@Resource.AllStatus</option>
+                    <option value="1">@Resource.Enable</option>
+                    <option value="0">@Resource.Disable</option>
+                </select>
+            </div>
+
+            <div class="form-group mx-sm-1 mr-2 my-1">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    @Resource.Search
+                </button>
+            </div>            
+        }
+    </div>
+</div>
+<hr />
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div id="gridcontainer">
+            <script>
+                $(document).ready(function () {
+                    X.Page.User.init();
+                    $("#status").val(@ViewBag.Active);
+                });
+            </script>
+
+            @Html.Partial("_UserGrid", Model)
+        </div>
+    </div>
+</div>
+

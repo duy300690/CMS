@@ -1,0 +1,14 @@
+﻿@model CMSWeb.Models.UserModel
+@using CMSWeb.Language
+@using (Html.BeginForm("DisablePost", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form", onsubmit = "return !1" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="show_error"></div>
+    @Html.Hidden("Id", (int)ViewBag.UserId)
+    <p>@Resource.SureDisable</p>
+    <hr />
+    <div class="text-right">
+        <button class="btn btn-danger btn-ok yes">Yes</button> &nbsp;
+        <button class="btn btn-secondary" data-dismiss="modal">No</button>
+    </div>
+}
