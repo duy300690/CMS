@@ -15,5 +15,12 @@ namespace CMSService
                                                               bool? status,
                                                               string sortColumn,
                                                               string sortType);
+        EmployeeInfo GetEmployeeById(int id, bool? status);
+
+        int CreateEmployee(EmployeeInfo employee, int userId);
+        bool IsExistEmail(string email);
+        bool IsExistIdentityCode(string identityCode);
+        void Active(int employeeId, int userId);
+        void DeActive(int employeeId, int userId);
     }
 }

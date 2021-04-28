@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace CMSWeb.Util
 {
@@ -124,7 +125,14 @@ namespace CMSWeb.Util
         {
             return (T)Enum.Parse(typeof(T), value, true);
         }
-
+        public static List<T> ConvertJsonToObject<T>(string json)
+        {
+            var serializer = new JavaScriptSerializer
+            {
+                MaxJsonLength = Int32.MaxValue
+            };
+            return serializer.Deserialize<List<T>>(json);
+        }
         public static string GetFileJsonLocation()
         {
             string json = string.Empty;
@@ -135,6 +143,16 @@ namespace CMSWeb.Util
                 json = r.ReadToEnd();
             }
             return json;
+        }
+
+        public static int GetAge(DateTime bornDate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - bornDate.Year;
+            if (bornDate > today.AddYears(-age))
+                age--;
+
+            return age;
         }
     }
 }

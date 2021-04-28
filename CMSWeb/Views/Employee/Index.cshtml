@@ -6,10 +6,10 @@
 }
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <h1 class="h3 mb-2 text-gray-800">@Resource.ListEmployee</h1>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
         @using (Html.BeginForm("Index", "Employee", FormMethod.Get, new { @class = "form-inline text-right", id = "employee_search_form", onsubmit = "return !1" }))
         {
             @Html.AntiForgeryToken()
@@ -56,7 +56,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    
-</script>

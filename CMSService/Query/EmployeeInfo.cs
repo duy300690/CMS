@@ -8,19 +8,23 @@ namespace CMSService.Query
 {
     public class EmployeeInfo
     {
-        public int Id { get; }
-        public string FirstName { get; }
-        public string LastName { get; }
-        public string Avatar { get; }
-        public string IdentityCartNumber { get; }
-        public string Email { get; }
-        public string Phone { get; }
-        public DateTime? Birthday { get; }
-        public string Address { get; }
-        public DateTime? CreateDate { get; }
-        public int? CreateBy { get; }
-        public DateTime? ModifiedDate { get; }
-        public int? ModifiedBy { get; }
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Avatar { get; set; }
+        public string IdentityCartNumber { get; set; }
+        public Nullable<bool> Gender { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public Nullable<System.DateTime> Birthday { get; set; }
+        public string Province { get; set; }
+        public string District { get; set; }
+        public string Ward { get; set; }
+        public string Address { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> CreateBy { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public bool Status { get; set; }
 
         public EmployeeInfo(int id
@@ -28,9 +32,13 @@ namespace CMSService.Query
                             , string lastName
                             , string avatar
                             , string identityCartNumber
+                            , bool? gender
                             , string email
                             , string phone
                             , DateTime? birthdate
+                            , string province
+                            , string district
+                            , string ward
                             , string address
                             , DateTime? createDate
                             , int? createBy
@@ -43,9 +51,13 @@ namespace CMSService.Query
             LastName = lastName;
             Avatar = avatar;
             IdentityCartNumber = identityCartNumber;
+            Gender = gender;
             Email = email;
             Phone = phone;
             Birthday = birthdate;
+            Province = province;
+            District = district;
+            Ward = ward;
             Address = address;
             CreateDate = createDate;
             CreateBy = createBy;

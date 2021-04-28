@@ -64,8 +64,7 @@ X.Page.setEnableDisableConfirm = function () {
                             ? X.Page.getAjaxList(location.href, function () { X.F.doEffect($("#" + message.split("#").pop())) })
                             : location.reload();
                     }
-
-                    if (code == 0) {
+                    else {
                         X.Thikbox.remove();
                         X.Thikbox.load(message);
                     }
@@ -74,8 +73,6 @@ X.Page.setEnableDisableConfirm = function () {
             return !1;
         });
     });
-
-
 }
 
 
@@ -277,24 +274,175 @@ X.Page.Employee =
     },
 
     create: function () {
-        $(function () {
-            $(document).on("change", ".uploadFile", function () {
+        $("#popbox form #Province").off().on("change", function (e) {
+            e.preventDefault();
+            let provinceCode = $(this).val();
 
-                var uploadFile = $(this);
-                var files = !!this.files ? this.files : [];
-                if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+            // Begin submit
+            X.A.xhr('/Employee/GetDistrict', !0,
+                {
+                    provinceCode: provinceCode
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
 
-                if (/^image/.test(files[0].type)) { // only image file
-                    var reader = new FileReader(); // instance of the FileReader
-                    reader.readAsDataURL(files[0]); // read the local file
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
 
-                    reader.onloadend = function () { // set image data as background of div                        
-                        //alert(uploadFile.closest(".upimage").find('.imagePreview').length);
-                        uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                    // Success - message will be URL to reload
+                    if (code == 1) {
+                        let listDistrict = JSON.parse(message)[0],
+                            option = '<option value="">--- Select District ---</option>',
+                            optionWard = '<option value="">--- Select Ward ---</option>';
+
+                        if (X.F.is(listDistrict, "undefined")) {
+                            $("#District").prop("disabled", !0);
+                            $("#Ward").prop("disabled", !0);
+                            $("#District").find('option').remove().end().append(option);
+                            $("#Ward").find('option').remove().end().append(optionWard);
+                            return !1;
+                        }
+
+                        let districts = [];
+                        $.each(listDistrict, function (i, item) {
+                            option += `<option value="${item.Id}">${item.Name}</option>`;
+                            districts.push(item);
+                        });
+
+                        $("#District").prop("disabled", !1);
+                        $("#District").find('option').remove().end().append(option);
+
+                        $("#District").off().on('change', function (e) {
+                            e.preventDefault();
+                            let id = $(this).val();
+                            if (id === '' || X.F.is(id, "undefined")) {
+                                $("#Ward").prop("disabled", !0);
+                                $("#Ward").find('option').remove().end().append(optionWard);
+                                return !1;
+                            }
+
+                            $.each(districts, function (i, v) {
+                                if (v.Id === id) {
+                                    let wards = v.Wards;
+                                    $.each(wards, function (i, item) {
+                                        optionWard += `<option value="${item.Id}">${item.Name}</option>`;
+                                    });
+
+                                    $("#Ward").prop("disabled", !1);
+                                    $("#Ward").find('option').remove().end().append(optionWard);
+                                    return !1;
+                                }
+                            });
+                        });
                     }
+                    else {
+                        X.F.setError(message);
+                    }
+                })
+            return !1;
+        });
+
+        $("#popbox form .uploadFile").off().on("change", function (e) {
+            e.preventDefault();
+            let input = this;
+            if (input.files && input.files[0]) {
+
+                var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+
+                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                    X.F.setError("Only formats are allowed : " + fileExtension.join(', '));
+                    return !1;
                 }
 
-            });
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#popbox form .imagePreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            return !1;
+        });
+
+        $("#popbox form").off().on("submit", function (e) {
+            e.preventDefault();
+            debugger;
+            let frm = $(this)
+                , token = $("[name=__RequestVerificationToken]", frm).val()
+                , firstName = $.trim($("[name=FirstName]", frm).val())
+                , lastName = $.trim($("[name=LastName]", frm).val())
+                , avatar = $.trim($("[name=Avater]", frm).attr('src'))
+                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
+                , birthday = $("[name=Birthday]", frm).val()
+                , email = $.trim($("[name=Email]", frm).val())
+                , gender = $("[name=Gender]", frm).val()
+                , phone = $.trim($("[name=Phone]", frm).val())
+                , district = $.trim($("[name=District] option:selected", frm).text())
+                , province = $.trim($("[name=Province] option:selected", frm).text())
+                , ward = $.trim($("[name=Ward] option:selected", frm).text())
+                , address = $.trim($("[name=Street]", frm).val())
+                , btnSbm = $("[type=submit]", frm);
+
+            if (firstName === "" || lastName === "" || email === "" || token === "") {
+                X.F.setError("Type First name + Last name + Email", !1);
+                return !1;
+            }
+
+            if (code === '') {
+                X.F.setError("Type the identity code", !1);
+                return !1;
+            }
+
+            if (!X.F.isEmail(email)) {
+                X.F.setError("Invalid email address", !1);
+                return !1;
+            }
+
+            if (district === '' || province === '' || ward === '' || address === '') {
+                X.F.setError("Type the province + district + ward + address!", !1);
+                return !1;
+            }
+
+            X.A.xhr(frm.prop("action"), !0,
+                {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    Avatar: avatar,
+                    IdentityCartNumber: code,
+                    Gender: gender,
+                    Email: email,
+                    Phone: phone,
+                    Birthday: birthday,
+                    Province: province,
+                    District: district,
+                    Ward: ward,
+                    Address: address,
+                    __RequestVerificationToken: token
+                }, function () {
+                    X.F.setError("", !0);
+                    btnSbm.prop("disabled", !0).addClass("disabled");
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+
+                    if (code == 1) {
+                        X.Thikbox.remove();
+                        X.Page.getAjaxList(window.location.href, function () { X.F.doEffect($("#" + message.split("#").pop())) })
+                    }
+                    else {
+                        X.F.setError(message, !1);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                    }
+                })
+            return !1;
         });
     },
 
@@ -318,6 +466,31 @@ X.Page.Employee =
                     X.Thikbox.load(data, "Create", function () {
                         that.create();
                     });
+                });
+        });
+
+        /*--- 3. Disable + Enable buttons */
+        $("[data-action=disable], [data-action=enable]").off().on("click", function (e) {
+            e.preventDefault();
+
+            // Load confirm popbox
+            let id = parseInt($(this).data("id")),
+                action = $(this).data("action");
+            if (isNaN(id) || action == "") {
+                alert("Invalid action id");
+                return !1;
+            }
+
+            let title = action === "disable" ? "Disable" : "Enable";
+
+            X.A.xhr("/employee/" + action + "/" + id)
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, title, function () {
+                        X.Page.setEnableDisableConfirm()
+                    });
+
                 });
         });
     },

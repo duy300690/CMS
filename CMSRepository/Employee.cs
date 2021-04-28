@@ -25,9 +25,13 @@ namespace CMSRepository
         public string LastName { get; set; }
         public string Avatar { get; set; }
         public string IdentityCartNumber { get; set; }
+        public Nullable<bool> Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
+        public string Province { get; set; }
+        public string District { get; set; }
+        public string Ward { get; set; }
         public string Address { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> CreateBy { get; set; }

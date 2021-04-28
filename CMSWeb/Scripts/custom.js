@@ -72,6 +72,19 @@ X.F = {
     },
 
     /**
+    is valid email syntax
+    */
+    isEmail: function (b) {
+        b = b.replace(/^\s+|\s+$/g, "");
+        if (b.split("@").length != 2 || b.indexOf(".") == -1 || b.length > 256) {
+            return !1;
+        }
+        var a = /^[a-z0-9,!#$%&'*+/=?^_`{|}~-]+(.[a-z0-9,!#$%&'*+/=?^_`{|}~-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*.([a-z]{2,})$/;
+        return b.toLowerCase().search(a) != -1;
+    },
+
+
+    /**
       is history pushState API
      */
     isHistory: function () {
@@ -120,7 +133,7 @@ X.F = {
             })
     },
 
-    setError: function (message, isLoading, jSelector) {        
+    setError: function (message, isLoading, jSelector) {
         var HIGHLIGHT_CLASS = "animated bounce"
             , errorDiv = X.F.is(jSelector, "undefined") ? $(".show_error") : $(jSelector)
             , msg = isLoading ? "Loading" : message

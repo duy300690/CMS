@@ -124,11 +124,56 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate email!.
+        /// </summary>
+        public static string ErrorDuplicateEmail {
+            get {
+                return ResourceManager.GetString("ErrorDuplicateEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate identity code.
+        /// </summary>
+        public static string ErrorDuplicateIdentity {
+            get {
+                return ResourceManager.GetString("ErrorDuplicateIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employees must be more than 22 years old!.
+        /// </summary>
+        public static string ErrorEmployeeAge {
+            get {
+                return ResourceManager.GetString("ErrorEmployeeAge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Female.
+        /// </summary>
+        public static string FeMale {
+            get {
+                return ResourceManager.GetString("FeMale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First name.
         /// </summary>
         public static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
             }
         }
         
@@ -160,6 +205,15 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Male.
+        /// </summary>
+        public static string Male {
+            get {
+                return ResourceManager.GetString("Male", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone.
         /// </summary>
         public static string Phone {
@@ -174,6 +228,51 @@ namespace CMSWeb.Language {
         public static string Province {
             get {
                 return ResourceManager.GetString("Province", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --- Select District ---.
+        /// </summary>
+        public static string SelectDistrict {
+            get {
+                return ResourceManager.GetString("SelectDistrict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --- Select gender ---.
+        /// </summary>
+        public static string SelectGender {
+            get {
+                return ResourceManager.GetString("SelectGender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --- Select Province ---.
+        /// </summary>
+        public static string SelectProvince {
+            get {
+                return ResourceManager.GetString("SelectProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --- Select Ward ---.
+        /// </summary>
+        public static string SelectWard {
+            get {
+                return ResourceManager.GetString("SelectWard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ward.
+        /// </summary>
+        public static string Ward {
+            get {
+                return ResourceManager.GetString("Ward", resourceCulture);
             }
         }
     }

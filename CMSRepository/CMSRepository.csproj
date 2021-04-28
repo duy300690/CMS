@@ -182,29 +182,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CMSModel.Context.cs">
+    <Compile Include="CMSEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CMSModel.Context.tt</DependentUpon>
+      <DependentUpon>CMSEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="CMSModel.cs">
+    <Compile Include="CMSEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="CMSModel.Designer.cs">
+    <Compile Include="CMSEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CMSModel.edmx</DependentUpon>
+      <DependentUpon>CMSEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Customer.cs">
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Employee.cs">
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Feedback.cs">
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="IEmployeeRepository.cs" />
@@ -216,20 +216,20 @@
     <Compile Include="Query\UserInfo.cs" />
     <Compile Include="Definition\SortList.cs" />
     <Compile Include="Solution.cs">
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>CMSModel.tt</DependentUpon>
+      <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <EntityDeploy Include="CMSModel.edmx">
+    <EntityDeploy Include="CMSEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CMSModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>CMSEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="CMSModel.edmx.diagram">
-      <DependentUpon>CMSModel.edmx</DependentUpon>
+    <None Include="CMSEntities.edmx.diagram">
+      <DependentUpon>CMSEntities.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -237,15 +237,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CMSModel.Context.tt">
+    <Content Include="CMSEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CMSModel.edmx</DependentUpon>
-      <LastGenOutput>CMSModel.Context.cs</LastGenOutput>
+      <DependentUpon>CMSEntities.edmx</DependentUpon>
+      <LastGenOutput>CMSEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="CMSModel.tt">
+    <Content Include="CMSEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CMSModel.edmx</DependentUpon>
-      <LastGenOutput>CMSModel.cs</LastGenOutput>
+      <DependentUpon>CMSEntities.edmx</DependentUpon>
+      <LastGenOutput>CMSEntities.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

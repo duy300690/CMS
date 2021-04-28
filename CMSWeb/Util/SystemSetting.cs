@@ -9,5 +9,7 @@ namespace CMSWeb.Util
     {
         public const int PageIndexDefault = 1;
         public const int PageSizeDefault = 10;
+
+        public const int DefaultAge = 22;
     }
 }

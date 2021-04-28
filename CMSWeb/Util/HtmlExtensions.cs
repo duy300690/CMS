@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Script.Serialization;
 
 namespace CMSWeb.Util
@@ -49,5 +50,13 @@ namespace CMSWeb.Util
             JSONString = JsonConvert.SerializeObject(table);
             return JSONString;
         }
+
+        public static dynamic ConvertJsonToObject(string json)
+        {
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            dynamic obj = serializer.Deserialize(json, typeof(object));
+            return obj;
+        }
     }
-}
+    }

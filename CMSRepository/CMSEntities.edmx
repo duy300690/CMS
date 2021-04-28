@@ -31,11 +31,15 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Avatar" Type="nvarchar" MaxLength="256" />
+          <Property Name="Avatar" Type="nvarchar(max)" />
           <Property Name="IdentityCartNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Gender" Type="bit" />
           <Property Name="Email" Type="varchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
           <Property Name="Birthday" Type="date" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="District" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ward" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateBy" Type="int" />
@@ -190,11 +194,15 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Avatar" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IdentityCartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="Boolean" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateBy" Type="Int32" />
@@ -356,9 +364,13 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="IdentityCartNumber" ColumnName="IdentityCartNumber" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="Ward" ColumnName="Ward" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />

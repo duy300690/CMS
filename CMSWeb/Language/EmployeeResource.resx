@@ -138,8 +138,23 @@
   <data name="EmployeeSearch" xml:space="preserve">
     <value>Enter your search ...</value>
   </data>
+  <data name="ErrorDuplicateEmail" xml:space="preserve">
+    <value>Duplicate email!</value>
+  </data>
+  <data name="ErrorDuplicateIdentity" xml:space="preserve">
+    <value>Duplicate identity code</value>
+  </data>
+  <data name="ErrorEmployeeAge" xml:space="preserve">
+    <value>Employees must be more than 22 years old!</value>
+  </data>
+  <data name="FeMale" xml:space="preserve">
+    <value>Female</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First name</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
   </data>
   <data name="IdentityCode" xml:space="preserve">
     <value>Indentity code</value>
@@ -150,10 +165,28 @@
   <data name="LastName" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="Male" xml:space="preserve">
+    <value>Male</value>
+  </data>
   <data name="Phone" xml:space="preserve">
     <value>Phone</value>
   </data>
   <data name="Province" xml:space="preserve">
     <value>Province</value>
+  </data>
+  <data name="SelectDistrict" xml:space="preserve">
+    <value>--- Select District ---</value>
+  </data>
+  <data name="SelectGender" xml:space="preserve">
+    <value>--- Select gender ---</value>
+  </data>
+  <data name="SelectProvince" xml:space="preserve">
+    <value>--- Select Province ---</value>
+  </data>
+  <data name="SelectWard" xml:space="preserve">
+    <value>--- Select Ward ---</value>
+  </data>
+  <data name="Ward" xml:space="preserve">
+    <value>Ward</value>
   </data>
 </root>

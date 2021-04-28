@@ -49,7 +49,7 @@
 
             @foreach (var item in Model)
             {
-                <tr class="@(!item.Status?"disabled":"")">
+                <tr class="@(!item.Status?"disabled":"")" id="employee@(item.Id)">
                     <td data-title="@UserResource.Fullname">@item.FullName</td>
                     <td data-title="@EmployeeResource.IdentityNumber">@item.IdentityCartNumber</td>
                     <td data-title="@UserResource.Email">@item.Email</td>
@@ -68,7 +68,7 @@
                         @if (item.Status)
                         {
                             <a class="btn btn-danger btn-sm mr-2 my-1"
-                               href="@Url.Action("Disable", "Employee", new { id = item.Id, returnUrl = Request.Url.AbsoluteUri })">
+                               href="#" data-action="disable" data-id="@item.Id">
                                 <i class="fas fa-trash-alt"></i>
                                 @Resource.Disable
                             </a>
@@ -76,7 +76,7 @@
                         else
                         {
                             <a class="btn btn-success btn-sm mr-2 my-1"
-                               href="@Url.Action("Enable", "Employee", new { id = item.Id, returnUrl = Request.Url.AbsoluteUri })">
+                               href="#" data-action="enable" data-id="@item.Id">
                                 <i class="fas fa-external-link-alt"></i>
                                 @Resource.Enable
                             </a>

@@ -258,7 +258,7 @@ namespace CMSWeb.Controllers
 
                 if (string.IsNullOrEmpty(role)) return Json(XUtil.JsonDie(UserResource.InvalidRole, statusCode));
 
-                var userInfo = _userService.GetUserById(id, true);
+                var userInfo = _userService.GetUserById(id, null);
                 if (userInfo == null) return Json(XUtil.JsonDie(UserResource.UserNotFound, statusCode));
 
                 var listRole = Helpers.GetListEnumData<CMSService.Secure.Roles>();

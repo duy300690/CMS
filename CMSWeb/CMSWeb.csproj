@@ -181,6 +181,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Models\CityModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EnumModel.cs" />
     <Compile Include="Models\LoginModels.cs" />
@@ -1950,6 +1951,7 @@
     <Content Include="Views\User\_SetRolePartial.cshtml" />
     <Content Include="Views\Employee\_CreatePartial.cshtml" />
     <Content Include="Models\local.json" />
+    <Content Include="Views\Employee\_EnablePartial.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
