@@ -61,7 +61,7 @@
                     </td>
                     <td data-title="@Resource.Action">
                         <a class="btn btn-warning btn-sm mr-2 my-1"
-                           href="@Url.Action("Edit", "Employee", new { id = item.Id, returnUrl = Request.Url.AbsoluteUri })">
+                           href="#" data-action="edit" data-id="@item.Id">
                             <i class="fas fa-edit"></i>
                             @Resource.Edit
                         </a>
@@ -109,6 +109,7 @@ else
 
 <script>
     $(document).ready(function () {
+        X.Page.Employee.init();
         X.Page.Employee.sort_employee();
     });
 </script>

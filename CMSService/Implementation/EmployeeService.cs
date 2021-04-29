@@ -164,5 +164,32 @@ namespace CMSService.Implementation
             employee.Deactivate();
             _employeeRepository.Save(employee, userId);
         }
+
+        public void Edit(EmployeeInfo model, int userId)
+        {
+            if (model == null) throw new ArgumentOutOfRangeException("Employee");
+
+            var employee = _employeeRepository.GetEmployeeById(model.Id, null);
+            if (employee == null) throw new ArgumentNullException("Employee");
+            employee.ChangeInfo(
+                                model.Id,
+                                model.FirstName,
+                                model.LastName,
+                                model.Avatar,
+                                model.IdentityCartNumber,
+                                model.Gender,
+                                model.Email,
+                                model.Phone,
+                                model.Birthday,
+                                model.Province,
+                                model.District,
+                                model.Ward,
+                                model.Address,
+                                model.ModifiedDate,
+                                model.ModifiedBy,
+                                model.Status);
+
+            _employeeRepository.Save(employee, userId);
+        }
     }
 }

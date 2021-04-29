@@ -159,12 +159,18 @@
     <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Language\CustomerResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomerResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Language\EmployeeResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -182,6 +188,7 @@
       <DependentUpon>UserResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\CityModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EnumModel.cs" />
     <Compile Include="Models\LoginModels.cs" />
@@ -1952,6 +1959,13 @@
     <Content Include="Views\Employee\_CreatePartial.cshtml" />
     <Content Include="Models\local.json" />
     <Content Include="Views\Employee\_EnablePartial.cshtml" />
+    <Content Include="Views\Employee\_DisablePartial.cshtml" />
+    <Content Include="Views\Employee\_EditPartial.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\_CustomerGrid.cshtml" />
+    <Content Include="Views\Customer\_CreatePartial.cshtml" />
+    <Content Include="Views\Customer\_DisablePartial.cshtml" />
+    <Content Include="Views\Customer\_EnablePartial.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -2101,6 +2115,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Language\CustomerResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomerResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Language\EmployeeResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmployeeResource.Designer.cs</LastGenOutput>

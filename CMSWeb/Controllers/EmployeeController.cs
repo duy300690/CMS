@@ -206,16 +206,8 @@ namespace CMSWeb.Controllers
             {
                 if (Request.IsAjaxRequest())
                 {
-                    try
-                    {
-                        var employee = _employeeService.GetEmployeeById(id, null);
-                        ViewBag.EmployeeId = employee.Id;
-                        return PartialView("_EnablePartial");
-                    }
-                    catch (Exception ex)
-                    {
-                        return HttpNotFound(ex.Message);
-                    }
+                    ViewBag.EmployeeId = id;
+                    return PartialView("_EnablePartial");
                 }
                 return RedirectToAction("Index", "Employee");
             }
@@ -233,12 +225,172 @@ namespace CMSWeb.Controllers
                 if (id < 1) return Json(XUtil.JsonDie(EmployeeResource.EmployeeNotFound, statusCode));
 
                 var userInfo = _employeeService.GetEmployeeById(id, false);
-                if (userInfo == null) return Json(XUtil.JsonDie(UserResource.UserNotFound, statusCode));
+                if (userInfo == null) return Json(XUtil.JsonDie(EmployeeResource.EmployeeNotFound, statusCode));
 
                 _employeeService.Active(id, SessionContext.GetUserLogin().Id);
 
                 statusCode = 1;
                 statusMessage = Request.Url.AbsolutePath + "#employee" + id;
+
+                return Json(XUtil.JsonDie(statusMessage, statusCode));
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
+        }
+
+        public ActionResult Disable(int id)
+        {
+            if (SessionContext.IsAuthentication().Item1)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    ViewBag.EmployeeId = id;
+                    return PartialView("_DisablePartial");
+                }
+                return RedirectToAction("Index", "Employee");
+            }
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult DisablePost(int id)
+        {
+            try
+            {
+                int statusCode = 0;
+                string statusMessage = string.Empty;
+
+                if (id < 1) return Json(XUtil.JsonDie(EmployeeResource.EmployeeNotFound, statusCode));
+
+                var userInfo = _employeeService.GetEmployeeById(id, true);
+                if (userInfo == null) return Json(XUtil.JsonDie(EmployeeResource.EmployeeNotFound, statusCode));
+
+                _employeeService.DeActive(id, SessionContext.GetUserLogin().Id);
+
+                statusCode = 1;
+                statusMessage = Request.Url.AbsolutePath + "#employee" + id;
+
+                return Json(XUtil.JsonDie(statusMessage, statusCode));
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
+        }
+
+        public ActionResult Edit(int id)
+        {
+            if (SessionContext.IsAuthentication().Item1)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    var employee = _employeeService.GetEmployeeById(id, null);
+                    if (employee == null)
+                        return HttpNotFound();
+
+                    EmployeeModel model = new EmployeeModel()
+                    {
+                        Id = employee.Id,
+                        FirstName = employee.FirstName,
+                        LastName = employee.LastName,
+                        Avatar = string.IsNullOrEmpty(employee.Avatar) ? "/img/undraw_profile.svg" : employee.Avatar,
+                        IdentityCartNumber = employee.IdentityCartNumber,
+                        Gender = employee.Gender,
+                        Email = employee.Email,
+                        Phone = employee.Phone,
+                        Birthday = employee.Birthday,
+                        Province = employee.Province,
+                        District = employee.District,
+                        Ward = employee.Ward,
+                        Address = employee.Address,
+                        CreateBy = employee.CreateBy,
+                        CreateDate = employee.CreateDate,
+                        ModifiedBy = employee.ModifiedBy,
+                        ModifiedDate = employee.ModifiedDate,
+                        Status = employee.Status
+                    };
+
+                    string strLocationJson = Util.Helpers.GetFileJsonLocation();
+                    var dataLocation = Util.Helpers.ConvertJsonToObject<CityModel>(strLocationJson);
+                    SelectList selectProvince = new SelectList(dataLocation, "Code", "Name", model.Province);
+                    ViewBag.ListProvince = selectProvince;
+
+                    List<District> listDistrict = new List<District>();
+                    var dataProvince = dataLocation.FirstOrDefault(x => x.Code.Equals(model.Province));
+                    if (dataProvince != null)
+                    {
+                        listDistrict = dataProvince.Districts;
+                        SelectList selectDistrict = new SelectList(listDistrict, "Id", "Name", model.District);
+                        ViewBag.ListDistrict = selectDistrict;
+                    }
+
+                    List<Ward> listWard = new List<Ward>();
+                    var dataWard = listDistrict.FirstOrDefault(x => x.Id.Equals(model.District));
+                    if (dataWard != null)
+                    {
+                        listWard = dataWard.Wards;
+                        SelectList selecWard = new SelectList(listWard, "Id", "Name", model.Ward);
+                        ViewBag.ListWard = selecWard;
+                    }
+
+                    return PartialView("_EditPartial", model);
+                }
+                return RedirectToAction("Index", "Employee");
+            }
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(EmployeeModel model)
+        {
+            try
+            {
+                int statusCode = 0;
+                string statusMessage = string.Empty;
+
+                if (model.Birthday != null && Util.Helpers.GetAge(model.Birthday.Value) < SystemSetting.DefaultAge)
+                    statusMessage = EmployeeResource.ErrorEmployeeAge;
+
+                //if (_employeeService.IsExistEmail(model.Email))
+                //    statusMessage = EmployeeResource.ErrorDuplicateEmail;
+
+                //if (_employeeService.IsExistIdentityCode(model.IdentityCartNumber))
+                //    statusMessage = EmployeeResource.ErrorDuplicateIdentity;
+
+                var employee = _employeeService.GetEmployeeById(model.Id, null);
+                if (employee == null)
+                    statusMessage = EmployeeResource.EmployeeNotFound;
+
+                if (!string.IsNullOrEmpty(statusMessage))
+                    return Json(XUtil.JsonDie(statusMessage, statusCode));
+
+
+                CMSService.Query.EmployeeInfo saveData = new CMSService.Query.EmployeeInfo(
+                                                    model.Id,
+                                                    model.FirstName,
+                                                    model.LastName,
+                                                    model.Avatar,
+                                                    model.IdentityCartNumber,
+                                                    model.Gender,
+                                                    model.Email,
+                                                    model.Phone,
+                                                    model.Birthday,
+                                                    model.Province,
+                                                    model.District,
+                                                    model.Ward,
+                                                    model.Address,
+                                                    model.CreateDate,
+                                                    model.CreateBy,
+                                                    model.ModifiedDate,
+                                                    model.ModifiedBy,
+                                                    employee.Status
+                    );
+                _employeeService.Edit(saveData, SessionContext.GetUserLogin().Id);
+
+                statusCode = 1;
+                statusMessage = Request.Url.AbsolutePath + "#employee" + model.Id;
 
                 return Json(XUtil.JsonDie(statusMessage, statusCode));
             }

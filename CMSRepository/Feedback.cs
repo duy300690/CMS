@@ -30,8 +30,8 @@ namespace CMSRepository
         public Nullable<int> ModifiedBy { get; set; }
         public byte Status { get; set; }
     
-        public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solution> Solutions { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

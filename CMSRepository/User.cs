@@ -31,8 +31,8 @@ namespace CMSRepository
         public string Role { get; set; }
         public bool Status { get; set; }
     
+        public virtual Employee Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
-        public virtual Employee Employee { get; set; }
     }
 }

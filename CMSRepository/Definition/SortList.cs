@@ -11,5 +11,6 @@ namespace CMSRepository
         public static string[] sortType = { "ASC", "DESC" };
         public static string[] UserList = { "Id", "Username", "Email", "CreateDate", "Role" };
         public static string[] employeeList = { "Id", "FirstName", "Email", "CreateDate" };
+        public static string[] customerList = { "Id", "FirstName", "Email", "CreateDate", "CustomerCart" };
     }
 }

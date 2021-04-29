@@ -35,6 +35,9 @@ namespace CMSWeb.App_Start
 
             kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>();
             kernel.Bind<IEmployeeService>().To<EmployeeService>();
+
+            kernel.Bind<ICustomerRepository>().To<CustomerRepository>();
+            kernel.Bind<ICustomerService>().To<CustomerService>();
         }
     }
 }

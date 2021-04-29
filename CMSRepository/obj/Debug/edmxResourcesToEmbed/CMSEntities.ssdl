@@ -12,7 +12,12 @@
     <Property Name="IdentityCartNumber" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
     <Property Name="Email" Type="varchar" MaxLength="30" />
+    <Property Name="Birthday" Type="date" />
+    <Property Name="Province" Type="nvarchar" MaxLength="50" />
+    <Property Name="District" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ward" Type="nvarchar" MaxLength="50" />
     <Property Name="Address" Type="nvarchar" MaxLength="250" />
+    <Property Name="FullAddress" Type="nvarchar" MaxLength="200" />
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="CreateBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />

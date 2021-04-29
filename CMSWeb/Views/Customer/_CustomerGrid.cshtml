@@ -1,0 +1,127 @@
+﻿@using CMSWeb.Language
+@using CMSWeb.Util
+@using MvcPaging
+@model IPagedList<CMSWeb.Models.CustomerModel>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped table-hover responsive-table">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[1]}_{ViewBag.SortAsc}")">@EmployeeResource.FirstName</a>
+                    @if (CMSRepository.SortList.customerList[1].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[4]}_{ViewBag.SortAsc}")">@CustomerResource.MemberCard</a>
+                    @if (CMSRepository.SortList.customerList[4].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[2]}_{ViewBag.SortAsc}")">@UserResource.Email</a>
+                    @if (CMSRepository.SortList.customerList[2].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[3]}_{ViewBag.SortAsc}")">@UserResource.CreateDate</a>
+                    @if (CMSRepository.SortList.customerList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>@Resource.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr class="@(!item.Status?"disabled":"")" id="customer@(item.Id)">
+                    <td data-title="@UserResource.Fullname">@item.FullName</td>
+                    <td data-title="@CustomerResource.MemberCard">@item.CustomerCart</td>
+                    <td data-title="@UserResource.Email">@item.Email</td>
+                    <td title="@UserResource.CreateDate">
+                        @if (item.CreateDate.HasValue)
+                        {
+                            @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
+                        }
+                    </td>
+                    <td data-title="@Resource.Action">
+                        <a class="btn btn-warning btn-sm mr-2 my-1"
+                           href="#" data-action="edit" data-id="@item.Id">
+                            <i class="fas fa-edit"></i>
+                            @Resource.Edit
+                        </a>
+                        @if (item.Status)
+                        {
+                            <a class="btn btn-danger btn-sm mr-2 my-1"
+                               href="#" data-action="disable" data-id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                                @Resource.Disable
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success btn-sm mr-2 my-1"
+                               href="#" data-action="enable" data-id="@item.Id">
+                                <i class="fas fa-external-link-alt"></i>
+                                @Resource.Enable
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+    if (Model.PageCount > 1)
+    {
+        <div class="paging text-center">
+            @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o
+                             .AddRouteValue("query", ViewBag.Query)
+                             .AddRouteValue("sortColumnName", ViewBag.CurrentSortParam)
+                             .AddRouteValue("status", ViewBag.Active))
+        </div>
+    }
+    <div class="text-center">
+        @Resource.Displaying @Model.ItemStart → @Model.ItemEnd / <strong>@Model.TotalItemCount</strong>
+    </div>
+}
+else
+{
+    <div class="text-center bold">@CustomerResource.CustomertNotFound</div>
+}
+
+<script>
+    $(document).ready(function () {
+        X.Page.Customer.init();
+        X.Page.Customer.sort_customer();
+    });
+</script>
+
+
