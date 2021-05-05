@@ -137,6 +137,41 @@ namespace CMSRepository.Implementation
             return customerInfo;
         }
 
+        public CustomerInfo GetByCustomerCard(string customerCard, bool? status)
+        {
+            if (string.IsNullOrEmpty(customerCard)) throw new ArgumentNullException("customerCard");
+
+            var customer = _context.Customers.Where(u => u.CustomerCard.Equals(customerCard));
+            if (status.HasValue)
+                customer = customer.Where(u => u.Status == status.Value);
+
+            var model = customer.FirstOrDefault();
+            if (model == null) return null;
+
+            CustomerInfo customerInfo = new CustomerInfo(
+                                                  model.Id,
+                                                  model.CustomerCard,
+                                                  model.FirstName,
+                                                  model.LastName,
+                                                  model.Gender,
+                                                  model.IdentityCardNumber,
+                                                  model.Phone,
+                                                  model.Email,
+                                                  model.Birthday,
+                                                  model.Province,
+                                                  model.District,
+                                                  model.Ward,
+                                                  model.Address,
+                                                  model.FullAddress,
+                                                  model.CreateDate,
+                                                  model.CreateBy,
+                                                  model.ModifiedDate,
+                                                  model.ModifiedBy,
+                                                  model.Status
+                );
+            return customerInfo;
+        }
+
         public void Save(CustomerInfo customer, int userId)
         {
             if (customer is null)

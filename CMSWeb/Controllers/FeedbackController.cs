@@ -17,12 +17,16 @@ namespace CMSWeb.Controllers
     public class FeedbackController : Controller
     {
         private readonly IFeedbackService _feedbackService;
+        private readonly ICustomerService _customerService;
+
         private const int PageSizeDefault = SystemSetting.PageSizeDefault;
         private string tempFolder = SystemSetting.TempFolder;
 
-        public FeedbackController(IFeedbackService feedbackService)
+        public FeedbackController(IFeedbackService feedbackService
+                                  , ICustomerService customerService)
         {
             _feedbackService = feedbackService;
+            _customerService = customerService;
         }
 
         // GET: Feedback
@@ -159,6 +163,19 @@ namespace CMSWeb.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult CheckCustomerCode(string code)
+        {
+            var model = _customerService.GetByCustomerCard(code, null);
+            if (model == null)
+                return Json(XUtil.JsonDie("", 0));
+
+            model.SetFullName();
+            string jsonObj = XUtil.Object2Json(model);
+
+            return Json(XUtil.JsonDie(jsonObj, 1));
         }
     }
 }

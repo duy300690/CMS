@@ -130,6 +130,36 @@ namespace CMSService.Implementation
             return model;
         }
 
+        public CustomerInfo GetByCustomerCard(string customerCard, bool? status)
+        {
+            if (string.IsNullOrEmpty(customerCard)) throw new ArgumentNullException("customerCard");
+
+            var customer = _customerRepository.GetByCustomerCard(customerCard, status);
+            if (customer == null) return null;
+
+            CustomerInfo model = new CustomerInfo(
+                                                  customer.Id,
+                                                  customer.CustomerCard,
+                                                  customer.FirstName,
+                                                  customer.LastName,
+                                                  customer.Gender,
+                                                  customer.IdentityCardNumber,
+                                                  customer.Phone,
+                                                  customer.Email,
+                                                  customer.Birthday,
+                                                  customer.Province,
+                                                  customer.District,
+                                                  customer.Ward,
+                                                  customer.Address,
+                                                  customer.FullAddress,
+                                                  customer.CreateDate,
+                                                  customer.CreateBy,
+                                                  customer.ModifiedDate,
+                                                  customer.ModifiedBy,
+                                                  customer.Status);
+            return model;
+        }
+
         public bool IsExistEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -175,7 +205,7 @@ namespace CMSService.Implementation
             customer.ChangeInfo(
                                 model.Id,
                                 model.FirstName,
-                                model.LastName,                             
+                                model.LastName,
                                 model.IdentityCardNumber,
                                 model.Gender,
                                 model.Email,

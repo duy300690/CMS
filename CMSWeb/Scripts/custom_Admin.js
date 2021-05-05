@@ -1155,6 +1155,46 @@ X.Page.Feedback = {
     },
 
     create: function () {
+        $("[data-action=check]").off().on("click", function (e) {
+            e.preventDefault();
+
+            let frm = $("#create_feedback_form")
+                , code = $.trim($("[name=MemberCard]", frm).val())
+                , btnSbm = $(this);
+            if (code === '') {
+                X.F.setError("Enter the member card!", !1);
+                return !1;
+            }
+
+            X.A.xhr("/feedback/CheckCustomerCode", !0,
+                {
+                    code: code
+                }, function () {
+                    X.F.setError("", !0);
+                    btnSbm.prop("disabled", !0).addClass("disabled");
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);                    
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload                    
+                    if (code == 1) {
+                        let obj = JSON.parse(message);
+
+                        $("[name=CustomerName]", frm).text(obj.FullName);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                        X.F.setError("", !1);
+                    }
+                    else {
+                        X.F.setError("Customer not found!", !1);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                    }
+                })
+            return !1;
+        });
 
         $("#popbox form").off().on("submit", function (e) {
             e.preventDefault();
@@ -1379,7 +1419,7 @@ X.Page.Feedback = {
                     // Check session
                     X.F.checkSession(xhr);
                     X.Thikbox.load(data, "Create", function () {
-                        //that.create();
+                        that.create();
                     });
                 });
         });

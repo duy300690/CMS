@@ -12,6 +12,7 @@ namespace CMSService.Query
         public string CustomerCard { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public string FullName { get; private set; }
         public Nullable<bool> Gender { get; private set; }
         public string IdentityCardNumber { get; private set; }
         public string Phone { get; private set; }
@@ -67,6 +68,11 @@ namespace CMSService.Query
             ModifiedBy = modifiedBy;
             ModifiedDate = modifiedDate;
             Status = status;
+        }
+
+        public void SetFullName()
+        {
+            FullName = $"{FirstName} {LastName}";
         }
     }
 }

@@ -18,7 +18,7 @@ namespace CMSRepository
                                                     , string sortColumn
                                                     , string sortType);
         CustomerInfo GetById(int id, bool? status);
-        //CustomerInfo GetByCustomerCard(string customerCard, bool? status);
+        CustomerInfo GetByCustomerCard(string customerCard, bool? status);
         void Save(CustomerInfo customer, int userId);
         bool IsExistEmail(string email);
         bool IsExistIdentityCode(string identityCode);

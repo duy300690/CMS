@@ -18,6 +18,7 @@ namespace CMSService
                                                     , string sortColumn
                                                     , string sortType);
         CustomerInfo GetById(int id, bool? status);
+        CustomerInfo GetByCustomerCard(string customerCard, bool? status);
         int Create(CustomerInfo customer, int userId);
         bool IsExistEmail(string email);
         bool IsExistIdentityCode(string identityCode);
