@@ -17,21 +17,24 @@ namespace CMSRepository
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Feedback()
         {
+            this.FeedbackAttachments = new HashSet<FeedbackAttachment>();
             this.Solutions = new HashSet<Solution>();
         }
     
         public int Id { get; set; }
         public Nullable<int> CustomerId { get; set; }
-        public string Coment { get; set; }
-        public string AttachFile { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> CreateBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public byte Status { get; set; }
     
+        public virtual Customer Customer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FeedbackAttachment> FeedbackAttachments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solution> Solutions { get; set; }
-        public virtual Customer Customer { get; set; }
     }
 }

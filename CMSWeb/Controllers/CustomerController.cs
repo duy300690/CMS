@@ -78,12 +78,12 @@ namespace CMSWeb.Controllers
                 listCustomer.Add(new CustomerModel()
                 {
                     Id = item.Id,
-                    CustomerCart = item.CustomerCart,
+                    CustomerCard = item.CustomerCard,
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     FullName = $"{item.FirstName} {item.LastName}",
                     Gender = item.Gender,
-                    IdentityCartNumber = item.IdentityCartNumber,
+                    IdentityCardNumber = item.IdentityCardNumber,
                     Phone = item.Phone,
                     Email = item.Email,
                     Birthday = item.Birthday,
@@ -153,7 +153,7 @@ namespace CMSWeb.Controllers
                 if (_customerService.IsExistEmail(model.Email))
                     statusMessage = EmployeeResource.ErrorDuplicateEmail;
 
-                if (_customerService.IsExistIdentityCode(model.IdentityCartNumber))
+                if (_customerService.IsExistIdentityCode(model.IdentityCardNumber))
                     statusMessage = EmployeeResource.ErrorDuplicateIdentity;
 
                 if (!string.IsNullOrEmpty(statusMessage))
@@ -180,7 +180,7 @@ namespace CMSWeb.Controllers
                                                   model.FirstName,
                                                   model.LastName,
                                                   model.Gender,
-                                                  model.IdentityCartNumber,
+                                                  model.IdentityCardNumber,
                                                   model.Phone,
                                                   model.Email,
                                                   model.Birthday,
@@ -279,6 +279,143 @@ namespace CMSWeb.Controllers
 
                 statusCode = 1;
                 statusMessage = Request.Url.AbsolutePath + "#customer" + id;
+
+                return Json(XUtil.JsonDie(statusMessage, statusCode));
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
+        }
+
+        public ActionResult Edit(int id)
+        {
+            if (SessionContext.IsAuthentication().Item1)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    var customer = _customerService.GetById(id, null);
+                    if (customer == null)
+                        return HttpNotFound();
+
+                    CustomerModel model = new CustomerModel()
+                    {
+                        Id = customer.Id,
+                        CustomerCard = customer.CustomerCard,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        FullName = $"{customer.FirstName} {customer.LastName}",
+                        Gender = customer.Gender,
+                        IdentityCardNumber = customer.IdentityCardNumber,
+                        Phone = customer.Phone,
+                        Email = customer.Email,
+                        Birthday = customer.Birthday,
+                        FullAddress = customer.FullAddress,
+                        Province = customer.Province,
+                        District = customer.District,
+                        Ward = customer.Ward,
+                        Address = customer.Address,
+                        CreateDate = customer.CreateDate,
+                        CreateBy = customer.CreateBy,
+                        ModifiedDate = customer.ModifiedDate,
+                        ModifiedBy = customer.ModifiedBy,
+                        Status = customer.Status
+                    };
+
+                    string strLocationJson = Util.Helpers.GetFileJsonLocation();
+                    var dataLocation = Util.Helpers.ConvertJsonToObject<CityModel>(strLocationJson);
+                    SelectList selectProvince = new SelectList(dataLocation, "Code", "Name", model.Province);
+                    ViewBag.ListProvince = selectProvince;
+
+                    List<District> listDistrict = new List<District>();
+                    var dataProvince = dataLocation.FirstOrDefault(x => x.Code.Equals(model.Province));
+                    if (dataProvince != null)
+                    {
+                        listDistrict = dataProvince.Districts;
+                        SelectList selectDistrict = new SelectList(listDistrict, "Id", "Name", model.District);
+                        ViewBag.ListDistrict = selectDistrict;
+                    }
+
+                    List<Ward> listWard = new List<Ward>();
+                    var dataWard = listDistrict.FirstOrDefault(x => x.Id.Equals(model.District));
+                    if (dataWard != null)
+                    {
+                        listWard = dataWard.Wards;
+                        SelectList selecWard = new SelectList(listWard, "Id", "Name", model.Ward);
+                        ViewBag.ListWard = selecWard;
+                    }
+
+                    return PartialView("_EditPartial", model);
+                }
+                return RedirectToAction("Index", "Customer");
+            }
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(CustomerModel model)
+        {
+            try
+            {
+                int statusCode = 0;
+                string statusMessage = string.Empty;
+
+                if (model.Birthday != null && Util.Helpers.GetAge(model.Birthday.Value) < SystemSetting.DefaultAge)
+                    statusMessage = EmployeeResource.ErrorEmployeeAge;
+
+                //if (_customerService.IsExistEmail(model.Email))
+                //    statusMessage = EmployeeResource.ErrorDuplicateEmail;
+
+                //if (_customerService.IsExistIdentityCode(model.IdentityCardNumber))
+                //    statusMessage = EmployeeResource.ErrorDuplicateIdentity;
+
+                var customer = _customerService.GetById(model.Id, null);
+                if (customer == null)
+                    statusMessage = EmployeeResource.EmployeeNotFound;
+
+                if (!string.IsNullOrEmpty(statusMessage))
+                    return Json(XUtil.JsonDie(statusMessage, statusCode));
+
+                // Get Full address
+                string strLocationJson = Util.Helpers.GetFileJsonLocation();
+                var dataLocation = Util.Helpers.ConvertJsonToObject<CityModel>(strLocationJson);
+
+                var province = dataLocation.FirstOrDefault(x => x.Code.Equals(model.Province));
+                string provinceName = province.Name;
+
+                var district = province.Districts.FirstOrDefault(x => x.Id.Equals(model.District));
+                string districtName = district.Name;
+
+                var ward = district.Wards.FirstOrDefault(x => x.Id.Equals(model.Ward));
+                string wardName = ward.Name;
+
+                string fullAddress = $"{model.Address}; {wardName}; {districtName}; {provinceName}";
+
+                CMSService.Query.CustomerInfo saveData = new CMSService.Query.CustomerInfo(
+                                                  model.Id,
+                                                  model.CustomerCard,
+                                                  model.FirstName,
+                                                  model.LastName,
+                                                  model.Gender,
+                                                  model.IdentityCardNumber,
+                                                  model.Phone,
+                                                  model.Email,
+                                                  model.Birthday,
+                                                  model.Province,
+                                                  model.District,
+                                                  model.Ward,
+                                                  model.Address,
+                                                  fullAddress,
+                                                  model.CreateDate,
+                                                  model.CreateBy,
+                                                  model.ModifiedDate,
+                                                  model.ModifiedBy,
+                                                  customer.Status
+                    );
+                _customerService.Edit(saveData, SessionContext.GetUserLogin().Id);
+
+                statusCode = 1;
+                statusMessage = Request.Url.AbsolutePath + "#customer" + model.Id;
 
                 return Json(XUtil.JsonDie(statusMessage, statusCode));
             }

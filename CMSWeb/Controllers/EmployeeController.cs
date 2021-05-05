@@ -76,7 +76,7 @@ namespace CMSWeb.Controllers
                     LastName = item.LastName,
                     FullName = $"{item.FirstName} {item.LastName}",
                     Avatar = item.Avatar,
-                    IdentityCartNumber = item.IdentityCartNumber,
+                    IdentityCardNumber = item.IdentityCardNumber,
                     Gender = item.Gender,
                     Email = item.Email,
                     Phone = item.Phone,
@@ -161,7 +161,7 @@ namespace CMSWeb.Controllers
                 if (_employeeService.IsExistEmail(model.Email))
                     statusMessage = EmployeeResource.ErrorDuplicateEmail;
 
-                if (_employeeService.IsExistIdentityCode(model.IdentityCartNumber))
+                if (_employeeService.IsExistIdentityCode(model.IdentityCardNumber))
                     statusMessage = EmployeeResource.ErrorDuplicateIdentity;
 
                 if (!string.IsNullOrEmpty(statusMessage))
@@ -172,7 +172,7 @@ namespace CMSWeb.Controllers
                                                     model.FirstName,
                                                     model.LastName,
                                                     model.Avatar,
-                                                    model.IdentityCartNumber,
+                                                    model.IdentityCardNumber,
                                                     model.Gender,
                                                     model.Email,
                                                     model.Phone,
@@ -296,7 +296,7 @@ namespace CMSWeb.Controllers
                         FirstName = employee.FirstName,
                         LastName = employee.LastName,
                         Avatar = string.IsNullOrEmpty(employee.Avatar) ? "/img/undraw_profile.svg" : employee.Avatar,
-                        IdentityCartNumber = employee.IdentityCartNumber,
+                        IdentityCardNumber = employee.IdentityCardNumber,
                         Gender = employee.Gender,
                         Email = employee.Email,
                         Phone = employee.Phone,
@@ -356,7 +356,7 @@ namespace CMSWeb.Controllers
                 //if (_employeeService.IsExistEmail(model.Email))
                 //    statusMessage = EmployeeResource.ErrorDuplicateEmail;
 
-                //if (_employeeService.IsExistIdentityCode(model.IdentityCartNumber))
+                //if (_employeeService.IsExistIdentityCode(model.IdentityCardNumber))
                 //    statusMessage = EmployeeResource.ErrorDuplicateIdentity;
 
                 var employee = _employeeService.GetEmployeeById(model.Id, null);
@@ -372,7 +372,7 @@ namespace CMSWeb.Controllers
                                                     model.FirstName,
                                                     model.LastName,
                                                     model.Avatar,
-                                                    model.IdentityCartNumber,
+                                                    model.IdentityCardNumber,
                                                     model.Gender,
                                                     model.Email,
                                                     model.Phone,

@@ -1,0 +1,114 @@
+﻿@using CMSWeb.Language
+@using CMSWeb.Util
+@using MvcPaging
+@model IPagedList<CMSWeb.Models.FeedbackModel>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped table-hover responsive-table">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[1]}_{ViewBag.SortAsc}")">@FeedbackResource.Title</a>
+                    @if (CMSRepository.SortList.feedbackList[1].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[3]}_{ViewBag.SortAsc}")">@FeedbackResource.Status</a>
+                    @if (CMSRepository.SortList.feedbackList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[2]}_{ViewBag.SortAsc}")">@FeedbackResource.CreateDate</a>
+                    @if (CMSRepository.SortList.feedbackList[2].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
+                <th>@Resource.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr id="feedback@(item.Id)">
+                    <td data-title="@FeedbackResource.Title">@item.Title</td>
+                    <td data-title="@FeedbackResource.Status">@item.Status</td>
+                    <td title="@FeedbackResource.CreateDate">
+                        @if (item.ModifiedDate.HasValue)
+                        {
+                            @Html.Raw(Helpers.FormatDisplayDateTime(item.ModifiedDate.Value));
+                        }
+                        else if (item.CreateDate.HasValue)
+                        {
+                            @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
+                        }
+                    </td>
+                    <td data-title="@Resource.Action">
+                        @if (item.Status == 0)
+                        {
+                            <a class="btn btn-danger btn-sm mr-2 my-1"
+                               href="#" data-action="peding" data-id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                                @Resource.Pending
+                            </a>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <a class="btn btn-success btn-sm mr-2 my-1"
+                               href="#" data-action="complete" data-id="@item.Id">
+                                <i class="fas fa-external-link-alt"></i>
+                                @Resource.Complete
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+    if (Model.PageCount > 1)
+    {
+        <div class="paging text-center">
+            @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o
+                             .AddRouteValue("query", ViewBag.Query)
+                             .AddRouteValue("sortColumnName", ViewBag.CurrentSortParam)
+                             .AddRouteValue("from", ViewBag.FromDate)
+                             .AddRouteValue("to", ViewBag.ToDate)
+                             .AddRouteValue("status", ViewBag.Active))
+        </div>
+    }
+    <div class="text-center">
+        @Resource.Displaying @Model.ItemStart → @Model.ItemEnd / <strong>@Model.TotalItemCount</strong>
+    </div>
+}
+else
+{
+    <div class="text-center bold">@FeedbackResource.FeedbackNotFound</div>
+}
+
+<script>
+    $(document).ready(function () {
+        //X.Page.Customer.init();
+        //X.Page.Customer.sort_customer();
+    });
+</script>

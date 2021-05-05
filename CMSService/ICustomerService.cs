@@ -23,5 +23,6 @@ namespace CMSService
         bool IsExistIdentityCode(string identityCode);
         void Active(int customerId, int userId);
         void DeActive(int customerId, int userId);
+        void Edit(CustomerInfo model, int userId);
     }
 }

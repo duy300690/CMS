@@ -49,7 +49,7 @@ namespace CMSRepository.Implementation
                              let fullname = p.FirstName + " " + p.LastName
                              where (fullname.Contains(query)
                              || p.Email.Contains(query)
-                             || p.IdentityCartNumber.Contains(query))
+                             || p.IdentityCardNumber.Contains(query))
                              select p).AsQueryable();
             }
 
@@ -75,7 +75,7 @@ namespace CMSRepository.Implementation
                     item.FirstName,
                     item.LastName,
                     item.Avatar,
-                    item.IdentityCartNumber,
+                    item.IdentityCardNumber,
                     item.Gender,
                     item.Email,
                     item.Phone,
@@ -110,7 +110,7 @@ namespace CMSRepository.Implementation
                                     employeeInfo.FirstName,
                                     employeeInfo.LastName,
                                     employeeInfo.Avatar,
-                                    employeeInfo.IdentityCartNumber,
+                                    employeeInfo.IdentityCardNumber,
                                     employeeInfo.Gender,
                                     employeeInfo.Email,
                                     employeeInfo.Phone,
@@ -135,7 +135,7 @@ namespace CMSRepository.Implementation
 
             if (string.IsNullOrEmpty(employee.FirstName)) throw new ArgumentNullException("First name null");
             if (string.IsNullOrEmpty(employee.LastName)) throw new ArgumentNullException("Last name null");
-            if (string.IsNullOrEmpty(employee.IdentityCartNumber)) throw new ArgumentNullException("IdentityCartNumber null");
+            if (string.IsNullOrEmpty(employee.IdentityCardNumber)) throw new ArgumentNullException("IdentityCardNumber null");
             if (string.IsNullOrEmpty(employee.Email)) throw new ArgumentNullException("Email null");
             if (string.IsNullOrEmpty(employee.Province)
                 || string.IsNullOrEmpty(employee.District)
@@ -182,7 +182,7 @@ namespace CMSRepository.Implementation
             if (string.IsNullOrEmpty(identityCode))
                 throw new ArgumentNullException("Identity code null");
 
-            return _context.Employees.Any(x => x.IdentityCartNumber.Equals(identityCode.Trim()));
+            return _context.Employees.Any(x => x.IdentityCardNumber.Equals(identityCode.Trim()));
         }
 
         private Employee MappingFromModelToEntity(EmployeeInfo employee)
@@ -198,7 +198,7 @@ namespace CMSRepository.Implementation
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Avatar = employee.Avatar,
-                IdentityCartNumber = employee.IdentityCartNumber,
+                IdentityCardNumber = employee.IdentityCardNumber,
                 Gender = employee.Gender,
                 Email = employee.Email,
                 Phone = employee.Phone,

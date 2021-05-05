@@ -32,7 +32,7 @@
                     }
                 </th>
                 <th>
-                    <a href="#" data-action="sortemployee" data-field="@($"{CMSRepository.SortList.employeeList[3]}_{ViewBag.SortAsc}")">@UserResource.CreateDate</a>
+                    <a href="#" data-action="sortemployee" data-field="@($"{CMSRepository.SortList.employeeList[3]}_{ViewBag.SortAsc}")">@Resource.ModifiedDate</a>
                     @if (CMSRepository.SortList.employeeList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
                     {
                         @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
@@ -51,10 +51,14 @@
             {
                 <tr class="@(!item.Status?"disabled":"")" id="employee@(item.Id)">
                     <td data-title="@UserResource.Fullname">@item.FullName</td>
-                    <td data-title="@EmployeeResource.IdentityNumber">@item.IdentityCartNumber</td>
+                    <td data-title="@EmployeeResource.IdentityNumber">@item.IdentityCardNumber</td>
                     <td data-title="@UserResource.Email">@item.Email</td>
-                    <td title="@UserResource.CreateDate">
-                        @if (item.CreateDate.HasValue)
+                    <td title="@Resource.ModifiedDate">
+                        @if (item.ModifiedDate.HasValue)
+                        {
+                            @Html.Raw(Helpers.FormatDisplayDateTime(item.ModifiedDate.Value));
+                        }
+                        else if (item.CreateDate.HasValue)
                         {
                             @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
                         }

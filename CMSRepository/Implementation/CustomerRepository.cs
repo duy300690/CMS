@@ -50,8 +50,8 @@ namespace CMSRepository.Implementation
                             let fullname = p.FirstName + " " + p.LastName
                             where (fullname.Contains(query)
                             || p.Email.Contains(query)
-                            || p.IdentityCartNumber.Contains(query)
-                            || p.CustomerCart.Contains(query))
+                            || p.IdentityCardNumber.Contains(query)
+                            || p.CustomerCard.Contains(query))
                             select p).AsQueryable();
             }
             if (!string.IsNullOrEmpty(provinceCode))
@@ -79,11 +79,11 @@ namespace CMSRepository.Implementation
             {
                 customers.Add(new CustomerInfo(
                                                  item.Id,
-                                                 item.CustomerCart,
+                                                 item.CustomerCard,
                                                  item.FirstName,
                                                  item.LastName,
                                                  item.Gender,
-                                                 item.IdentityCartNumber,
+                                                 item.IdentityCardNumber,
                                                  item.Phone,
                                                  item.Email,
                                                  item.Birthday,
@@ -115,11 +115,11 @@ namespace CMSRepository.Implementation
             var model = customer.FirstOrDefault();
             CustomerInfo customerInfo = new CustomerInfo(
                                                   model.Id,
-                                                  model.CustomerCart,
+                                                  model.CustomerCard,
                                                   model.FirstName,
                                                   model.LastName,
                                                   model.Gender,
-                                                  model.IdentityCartNumber,
+                                                  model.IdentityCardNumber,
                                                   model.Phone,
                                                   model.Email,
                                                   model.Birthday,
@@ -146,7 +146,7 @@ namespace CMSRepository.Implementation
 
             if (string.IsNullOrEmpty(customer.FirstName)) throw new ArgumentNullException("First name null");
             if (string.IsNullOrEmpty(customer.LastName)) throw new ArgumentNullException("Last name null");
-            if (string.IsNullOrEmpty(customer.IdentityCartNumber)) throw new ArgumentNullException("IdentityCartNumber null");
+            if (string.IsNullOrEmpty(customer.IdentityCardNumber)) throw new ArgumentNullException("IdentityCartNumber null");
             if (string.IsNullOrEmpty(customer.Email)) throw new ArgumentNullException("Email null");
             if (string.IsNullOrEmpty(customer.Province)
                 || string.IsNullOrEmpty(customer.District)
@@ -192,7 +192,7 @@ namespace CMSRepository.Implementation
             if (string.IsNullOrEmpty(identityCode))
                 throw new ArgumentNullException("Identity code null");
 
-            return _context.Customers.Any(x => x.IdentityCartNumber.Equals(identityCode.Trim()));
+            return _context.Customers.Any(x => x.IdentityCardNumber.Equals(identityCode.Trim()));
         }
 
         private Customer MappingFromModelToEntity(CustomerInfo model)
@@ -204,11 +204,11 @@ namespace CMSRepository.Implementation
             Customer customer = new Customer()
             {
                 Id = model.Id,
-                CustomerCart = model.CustomerCart,
+                CustomerCard = model.CustomerCard,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender,
-                IdentityCartNumber = model.IdentityCartNumber,
+                IdentityCardNumber = model.IdentityCardNumber,
                 Phone = model.Phone,
                 Email = model.Email,
                 Birthday = model.Birthday,

@@ -164,5 +164,13 @@ namespace CMSWeb.Util
             //return the total seconds (which is a UNIX timestamp)
             return (double)span.TotalSeconds;
         }
+
+        public static DateTime? ConvertStringToDate(string strDate)
+        {
+            DateTime.TryParse(strDate, out DateTime date);
+            if (date.Year > 1900)
+                return date;
+            return null;
+        }
     }
 }

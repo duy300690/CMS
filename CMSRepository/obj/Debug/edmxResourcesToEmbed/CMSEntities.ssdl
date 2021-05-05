@@ -5,11 +5,11 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CustomerCart" Type="varchar" MaxLength="50" />
+    <Property Name="CustomerCard" Type="varchar" MaxLength="50" />
     <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
     <Property Name="LastName" Type="nvarchar" MaxLength="50" />
     <Property Name="Gender" Type="bit" />
-    <Property Name="IdentityCartNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IdentityCardNumber" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
     <Property Name="Email" Type="varchar" MaxLength="30" />
     <Property Name="Birthday" Type="date" />
@@ -32,7 +32,7 @@
     <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
     <Property Name="LastName" Type="nvarchar" MaxLength="50" />
     <Property Name="Avatar" Type="nvarchar(max)" />
-    <Property Name="IdentityCartNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IdentityCardNumber" Type="varchar" MaxLength="50" />
     <Property Name="Gender" Type="bit" />
     <Property Name="Email" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="nvarchar" MaxLength="20" />
@@ -53,13 +53,25 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CustomerId" Type="int" />
-    <Property Name="Coment" Type="ntext" />
-    <Property Name="AttachFile" Type="nvarchar" MaxLength="500" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Content" Type="nvarchar(max)" />
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="CreateBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="Status" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FeedbackAttachment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" />
+    <Property Name="MimeType" Type="varchar" MaxLength="50" />
+    <Property Name="FeedbackId" Type="int" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Iden" Type="uniqueidentifier" />
+    <Property Name="FileContent" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Solutions">
     <Key>
@@ -114,6 +126,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_FeedbackAttachment_Feedback">
+    <End Role="Feedback" Type="Self.Feedback" Multiplicity="0..1" />
+    <End Role="FeedbackAttachment" Type="Self.FeedbackAttachment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feedback">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeedbackAttachment">
+        <PropertyRef Name="FeedbackId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Solutions_Coment">
     <End Role="Feedback" Type="Self.Feedback" Multiplicity="0..1" />
     <End Role="Solutions" Type="Self.Solutions" Multiplicity="*" />
@@ -142,6 +166,7 @@
     <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FeedbackAttachment" EntityType="Self.FeedbackAttachment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Solutions" EntityType="Self.Solutions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Coment_Customer1" Association="Self.FK_Coment_Customer1">
@@ -151,6 +176,10 @@
     <AssociationSet Name="FK_Customer_User" Association="Self.FK_Customer_User">
       <End Role="User" EntitySet="User" />
       <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FeedbackAttachment_Feedback" Association="Self.FK_FeedbackAttachment_Feedback">
+      <End Role="Feedback" EntitySet="Feedback" />
+      <End Role="FeedbackAttachment" EntitySet="FeedbackAttachment" />
     </AssociationSet>
     <AssociationSet Name="FK_Solutions_Coment" Association="Self.FK_Solutions_Coment">
       <End Role="Feedback" EntitySet="Feedback" />

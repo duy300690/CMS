@@ -161,6 +161,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -177,6 +178,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EmployeeResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Language\FeedbackResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Language\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -191,10 +197,12 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EnumModel.cs" />
+    <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Models\LoginModels.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\AttachmentHelper.cs" />
     <Compile Include="Util\Helpers.cs" />
     <Compile Include="Util\HtmlExtensions.cs" />
     <Compile Include="Util\SessionContext.cs" />
@@ -1966,6 +1974,10 @@
     <Content Include="Views\Customer\_CreatePartial.cshtml" />
     <Content Include="Views\Customer\_DisablePartial.cshtml" />
     <Content Include="Views\Customer\_EnablePartial.cshtml" />
+    <Content Include="Views\Customer\_EditPartial.cshtml" />
+    <Content Include="Views\Feedback\Index.cshtml" />
+    <Content Include="Views\Feedback\_FeedbackGrid.cshtml" />
+    <Content Include="Views\Feedback\_CreatePartial.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -2122,6 +2134,10 @@
     <EmbeddedResource Include="Language\EmployeeResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmployeeResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language\FeedbackResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Language\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

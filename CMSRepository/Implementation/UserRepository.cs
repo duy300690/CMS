@@ -48,6 +48,7 @@ namespace CMSRepository.Implementation
                     item.Id,
                     item.EmployeeId,
                     item.Employee != null ? $"{item.Employee.FirstName} {item.Employee.LastName}" : string.Empty,
+                    item.Employee != null ? item.Employee.Avatar : string.Empty,
                     item.Username,
                     item.Password,
                     item.CreateDate,
@@ -74,6 +75,7 @@ namespace CMSRepository.Implementation
             return new UserInfo(userInfo.Id,
                                  userInfo.EmployeeId,
                                  userInfo.Employee != null ? $"{userInfo.Employee.FirstName} {userInfo.Employee.LastName}" : string.Empty,
+                                 userInfo.Employee != null ? userInfo.Employee.Avatar : string.Empty,
                                  userInfo.Username,
                                  userInfo.Password,
                                  userInfo.CreateDate,
@@ -101,6 +103,7 @@ namespace CMSRepository.Implementation
             return new UserInfo(userInfo.Id,
                                 userInfo.EmployeeId,
                                 userInfo.Employee != null ? $"{userInfo.Employee.FirstName} {userInfo.Employee.LastName}" : string.Empty,
+                                userInfo.Employee != null ? userInfo.Employee.Avatar : string.Empty,
                                 userInfo.Username,
                                 userInfo.Password,
                                 userInfo.CreateDate,
@@ -134,7 +137,7 @@ namespace CMSRepository.Implementation
             {
                 User user = _context.Users.FirstOrDefault(p => p.Id == userInfo.Id);
 
-                saveUser.ModifiedDate = DateTime.Now;                
+                saveUser.ModifiedDate = DateTime.Now;
                 _context.Entry(user).CurrentValues.SetValues(saveUser);
 
                 _context.SaveChanges();

@@ -1,0 +1,134 @@
+﻿@model CMSWeb.Models.CustomerModel
+@using CMSWeb.Language
+@using CMSWeb.Util
+@using (Html.BeginForm("Edit", "Customer", FormMethod.Post, new { role = "form", autocomplete = "off", onsubmit = "return !1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="show_error"></div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="FirstName">@EmployeeResource.FirstName</label>
+            @Html.TextBoxFor(m => m.FirstName, new
+       {
+           @class = "form-control",
+           maxlength = 20,
+           autofocus = "",
+           required = ""
+
+       })
+        </div>
+        <div class="form-group col-md-6">
+            <label for="LastName">@EmployeeResource.LastName</label>
+            @Html.TextBoxFor(m => m.LastName, new
+       {
+           @class = "form-control",
+           maxlength = 20,
+           autofocus = "",
+           required = ""
+       })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="IdentityCartNumber">@EmployeeResource.IdentityCode</label>
+            @Html.TextBoxFor(m => m.IdentityCardNumber, new
+       {
+           @class = "form-control",
+           maxlength = 20,
+           autofocus = "",
+           required = "",
+           type = "number"
+       })
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Birthday">@EmployeeResource.Birthday</label>
+            <input type="date" class="form-control" name="Birthday" id="Birthday"
+                   value="@(Model.Birthday.HasValue?Model.Birthday.Value.ToString("yyyy-MM-dd"):"")" />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Gender">@EmployeeResource.Gender</label>
+            <select class="form-control" id="Gender" name="Gender">
+                <option>@EmployeeResource.SelectGender</option>
+                <option value="true" @(Model.Gender.HasValue && Model.Gender.Value ? "selected" : "")>@EmployeeResource.Male</option>
+                <option value="false" @(Model.Gender.HasValue && !Model.Gender.Value ? "selected" : "")>@EmployeeResource.FeMale</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Email">@UserResource.Email</label>
+            @Html.TextBoxFor(m => m.Email, new
+           {
+               @class = "form-control",
+               maxlength = 50,
+               autofocus = "",
+               type = "Email",
+               required = ""
+           })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Phone">@EmployeeResource.Phone</label>
+            @Html.TextBoxFor(m => m.Phone, new
+           {
+               @class = "form-control",
+               maxlength = 20,
+               autofocus = "",
+               required = "",
+               type = "tel"
+           })
+        </div>
+        <div class="form-group col-md-6">
+            <label>@EmployeeResource.Province / @EmployeeResource.City</label>
+            @Html.DropDownListFor(m => m.Province, (IEnumerable<SelectListItem>)ViewBag.ListProvince, EmployeeResource.SelectProvince, new { @class = "form-control", required = "" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>@EmployeeResource.District</label>
+            @if (ViewBag.ListDistrict == null)
+            {
+                <select class="form-control" disabled id="District" name="District" required="">
+                    <option value="">@EmployeeResource.SelectDistrict</option>'
+                </select>
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.District, (IEnumerable<SelectListItem>)ViewBag.ListDistrict, EmployeeResource.SelectDistrict, new { @class = "form-control", required = "" })
+            }
+
+        </div>
+        <div class="form-group col-md-6">
+            <label>@EmployeeResource.Ward</label>
+            @if (ViewBag.ListWard == null)
+            {
+                <select class="form-control" disabled id="Ward" name="Ward" required="">
+                    <option value="">@EmployeeResource.SelectWard</option>'
+                </select>
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.Ward, (IEnumerable<SelectListItem>)ViewBag.ListWard, EmployeeResource.SelectWard, new { @class = "form-control", required = "" })
+            }
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Address">@EmployeeResource.Address</label>
+        @Html.TextBoxFor(m => m.Address, new
+       {
+           @class = "form-control",
+           maxlength = 500,
+           autofocus = "",
+           required = ""
+       })
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-ok yes">@Resource.Update</button>	&nbsp;
+        <button class="btn btn-secondary" data-dismiss="modal">@Resource.Cancel</button>
+    </div>
+}

@@ -83,7 +83,6 @@ D:\Projects\CMS\CMSRepository\bin\Debug\System.Web.WebPages.Deployment.xml
 D:\Projects\CMS\CMSRepository\bin\Debug\System.Web.WebPages.Razor.xml
 D:\Projects\CMS\CMSRepository\bin\Debug\WebMatrix.Data.xml
 D:\Projects\CMS\CMSRepository\bin\Debug\WebMatrix.WebData.xml
-D:\Projects\CMS\CMSRepository\obj\Debug\CMSRepository.csprojAssemblyReference.cache
 D:\Projects\CMS\CMSRepository\obj\Debug\CMSRepository.csproj.CoreCompileInputs.cache
 D:\Projects\CMS\CMSRepository\obj\Debug\CMSRepository.csproj.CopyComplete
 D:\Projects\CMS\CMSRepository\obj\Debug\CMSRepository.dll

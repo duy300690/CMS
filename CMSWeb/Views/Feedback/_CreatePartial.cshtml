@@ -1,0 +1,56 @@
+﻿@using CMSWeb.Language
+@using CMSWeb.Util
+
+@using (Html.BeginForm("Create", "Feedback", FormMethod.Post, new { id = "create_feedback_form", role = "form", autocomplete = "off", onsubmit = "return !1" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="show_error"></div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@CustomerResource.MemberCard</label>
+        <input class="col-sm-5 form-control" name="MemberCard" id="MemberCard" required="" />
+        <div class="col-sm-2">
+            <button type="button" class=" btn btn-primary">@Resource.Check</button>
+        </div>        
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@CustomerResource.CustomerName</label>
+        <label class="col-sm-8 col-form-label">N/A</label>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@FeedbackResource.Title</label>
+        <input class="col-sm-8 form-control" name="Title" id="Title" required="" />
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@FeedbackResource.Content</label>
+        <textarea class="col-sm-8 form-control" rows="5" id="Content" name="Content" maxlength="500" required=""></textarea>
+    </div>
+
+    <div id="attachmentContainer" class="form-group row">
+        <label class="col-sm-4 control-label">@Resource.Attachments</label>
+        <div class="col-sm-8 padL0">
+            <button type="button" class="btn btn-sm btn-light">
+                @Resource.Add
+                <i class="fas fa-plus"></i>
+            </button>
+
+            <ul id="attach-files" class="list-group"></ul>
+            <input id="input_attachment_file" type="file" class="attachment-file" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx" multiple>
+            <div id="progress" class="progress-upload w320px" style="display:none">
+                <div id="progressbar" class="progress-upload-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary btn-ok yes">@Resource.Create</button>	&nbsp;
+        <button class="btn btn-secondary" data-dismiss="modal">@Resource.Cancel</button>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        X.Page.Feedback.attachFiles();
+    });
+</script>

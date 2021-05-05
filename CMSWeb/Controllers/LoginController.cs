@@ -51,6 +51,7 @@ namespace CMSWeb.Controllers
                     Id = user.Id,
                     EmployeeId = user.EmployeeId,
                     EmployeeName = user.EmployeeName,
+                    Avatar = string.Empty,
                     Username = user.Username,
                     CreateDate = user.CreateDate,
                     CreateBy = user.CreateBy,

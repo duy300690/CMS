@@ -25,7 +25,7 @@ namespace CMSService.Implementation
 
             if (string.IsNullOrEmpty(employee.FirstName)) throw new ArgumentNullException("First name null");
             if (string.IsNullOrEmpty(employee.LastName)) throw new ArgumentNullException("Last name null");
-            if (string.IsNullOrEmpty(employee.IdentityCartNumber)) throw new ArgumentNullException("IdentityCartNumber null");
+            if (string.IsNullOrEmpty(employee.IdentityCardNumber)) throw new ArgumentNullException("IdentityCardNumber null");
             if (string.IsNullOrEmpty(employee.Email)) throw new ArgumentNullException("Email null");
             if (string.IsNullOrEmpty(employee.Province)
                 || string.IsNullOrEmpty(employee.District)
@@ -39,7 +39,7 @@ namespace CMSService.Implementation
                                                     employee.FirstName,
                                                     employee.LastName,
                                                     employee.Avatar,
-                                                    employee.IdentityCartNumber,
+                                                    employee.IdentityCardNumber,
                                                     employee.Gender,
                                                     employee.Email,
                                                     employee.Phone,
@@ -79,7 +79,7 @@ namespace CMSService.Implementation
                                                     item.FirstName,
                                                     item.LastName,
                                                     item.Avatar,
-                                                    item.IdentityCartNumber,
+                                                    item.IdentityCardNumber,
                                                     item.Gender,
                                                     item.Email,
                                                     item.Phone,
@@ -111,7 +111,7 @@ namespace CMSService.Implementation
                                                   employee.FirstName,
                                                   employee.LastName,
                                                   employee.Avatar,
-                                                  employee.IdentityCartNumber,
+                                                  employee.IdentityCardNumber,
                                                   employee.Gender,
                                                   employee.Email,
                                                   employee.Phone,
@@ -176,7 +176,7 @@ namespace CMSService.Implementation
                                 model.FirstName,
                                 model.LastName,
                                 model.Avatar,
-                                model.IdentityCartNumber,
+                                model.IdentityCardNumber,
                                 model.Gender,
                                 model.Email,
                                 model.Phone,

@@ -5,16 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="faf3160417494c769a7410bfa99beb56" Name="Diagram1">
-        <EntityTypeShape EntityType="CMSModel.Employee" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="CMSModel.Feedback" Width="1.5" PointX="7.5" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CMSModel.Solution" Width="1.5" PointX="9.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CMSModel.User" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
-        <AssociationConnector Association="CMSModel.FK_User_Employees" ManuallyRouted="false" />
-        <AssociationConnector Association="CMSModel.FK_Solutions_Coment" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="CMSModel.Customer" Width="1.5" PointX="5.25" PointY="0.875" />
+        <EntityTypeShape EntityType="CMSModel.Customer" Width="1.5" PointX="5.25" PointY="1.75" />
+        <EntityTypeShape EntityType="CMSModel.Employee" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="CMSModel.Feedback" Width="1.5" PointX="7.5" PointY="2.625" />
+        <EntityTypeShape EntityType="CMSModel.FeedbackAttachment" Width="1.5" PointX="9.75" PointY="1.125" />
+        <EntityTypeShape EntityType="CMSModel.Solution" Width="1.5" PointX="9.75" PointY="4.5" />
+        <EntityTypeShape EntityType="CMSModel.User" Width="1.5" PointX="3" PointY="2.625" />
         <AssociationConnector Association="CMSModel.FK_Coment_Customer1" />
         <AssociationConnector Association="CMSModel.FK_Customer_User" />
-        </Diagram>
+        <AssociationConnector Association="CMSModel.FK_User_Employees" />
+        <AssociationConnector Association="CMSModel.FK_FeedbackAttachment_Feedback" />
+        <AssociationConnector Association="CMSModel.FK_Solutions_Coment" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

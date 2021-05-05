@@ -21,11 +21,11 @@ namespace CMSRepository
         }
     
         public int Id { get; set; }
-        public string CustomerCart { get; set; }
+        public string CustomerCard { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Nullable<bool> Gender { get; set; }
-        public string IdentityCartNumber { get; set; }
+        public string IdentityCardNumber { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }

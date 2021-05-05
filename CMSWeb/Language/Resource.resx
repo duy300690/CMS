@@ -120,11 +120,23 @@
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AllStatus" xml:space="preserve">
     <value>All status</value>
   </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
@@ -159,6 +171,9 @@
   <data name="Enable" xml:space="preserve">
     <value>Enable</value>
   </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
   <data name="ListEmployee" xml:space="preserve">
     <value>List employee</value>
   </data>
@@ -168,8 +183,17 @@
   <data name="LoginFaiure" xml:space="preserve">
     <value>Login faiure !</value>
   </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modify date</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
   <data name="PasswordType" xml:space="preserve">
     <value>Please type your password</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

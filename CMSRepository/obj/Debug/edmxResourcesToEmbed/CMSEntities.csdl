@@ -1,115 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="Employee">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="IdentityCartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Gender" Type="Boolean" />
-    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="Birthday" Type="DateTime" Precision="0" />
-    <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Ward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="CreateDate" Type="DateTime" Precision="3" />
-    <Property Name="CreateBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-    <Property Name="Status" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Users" Relationship="Self.FK_User_Employees" FromRole="Employees" ToRole="User" />
-  </EntityType>
-  <EntityType Name="Feedback">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CustomerId" Type="Int32" />
-    <Property Name="Coment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="AttachFile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="CreateDate" Type="DateTime" Precision="3" />
-    <Property Name="CreateBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-    <Property Name="Status" Type="Byte" Nullable="false" />
-    <NavigationProperty Name="Solutions" Relationship="Self.FK_Solutions_Coment" FromRole="Feedback" ToRole="Solutions" />
-    <NavigationProperty Name="Customer" Relationship="CMSModel.FK_Coment_Customer1" FromRole="Feedback" ToRole="Customer" />
-  </EntityType>
-  <EntityType Name="Solution">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="FeedbackId" Type="Int32" />
-    <Property Name="UserSolveId" Type="Int32" />
-    <Property Name="solutions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="CreateDate" Type="DateTime" Precision="3" />
-    <Property Name="CreateBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-    <Property Name="Status" Type="Byte" Nullable="false" />
-    <NavigationProperty Name="Feedback" Relationship="Self.FK_Solutions_Coment" FromRole="Solutions" ToRole="Feedback" />
-  </EntityType>
-  <EntityType Name="User">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="EmployeeId" Type="Int32" />
-    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-    <Property Name="CreateDate" Type="DateTime" Precision="3" />
-    <Property Name="CreateBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-    <Property Name="Role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="Status" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Employee" Relationship="Self.FK_User_Employees" FromRole="User" ToRole="Employees" />
-    <NavigationProperty Name="Customers" Relationship="CMSModel.FK_Customer_User" FromRole="User" ToRole="Customer" />
-  </EntityType>
-  <Association Name="FK_User_Employees">
-    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
-    <End Role="User" Type="Self.User" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employees">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="User">
-        <PropertyRef Name="EmployeeId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Solutions_Coment">
-    <End Role="Feedback" Type="Self.Feedback" Multiplicity="0..1" />
-    <End Role="Solutions" Type="Self.Solution" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Feedback">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Solutions">
-        <PropertyRef Name="FeedbackId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="CMSEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Employees" EntityType="Self.Employee" />
-    <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
-    <EntitySet Name="Solutions" EntityType="Self.Solution" />
-    <EntitySet Name="Users" EntityType="Self.User" />
-    <AssociationSet Name="FK_User_Employees" Association="Self.FK_User_Employees">
-      <End Role="Employees" EntitySet="Employees" />
-      <End Role="User" EntitySet="Users" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Solutions_Coment" Association="Self.FK_Solutions_Coment">
-      <End Role="Feedback" EntitySet="Feedbacks" />
-      <End Role="Solutions" EntitySet="Solutions" />
-    </AssociationSet>
     <EntitySet Name="Customers" EntityType="CMSModel.Customer" />
+    <EntitySet Name="Employees" EntityType="CMSModel.Employee" />
+    <EntitySet Name="Feedbacks" EntityType="CMSModel.Feedback" />
+    <EntitySet Name="FeedbackAttachments" EntityType="CMSModel.FeedbackAttachment" />
+    <EntitySet Name="Solutions" EntityType="CMSModel.Solution" />
+    <EntitySet Name="Users" EntityType="CMSModel.User" />
     <AssociationSet Name="FK_Coment_Customer1" Association="CMSModel.FK_Coment_Customer1">
       <End Role="Customer" EntitySet="Customers" />
       <End Role="Feedback" EntitySet="Feedbacks" />
@@ -118,17 +15,29 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Customer" EntitySet="Customers" />
     </AssociationSet>
+    <AssociationSet Name="FK_User_Employees" Association="CMSModel.FK_User_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FeedbackAttachment_Feedback" Association="CMSModel.FK_FeedbackAttachment_Feedback">
+      <End Role="Feedback" EntitySet="Feedbacks" />
+      <End Role="FeedbackAttachment" EntitySet="FeedbackAttachments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Solutions_Coment" Association="CMSModel.FK_Solutions_Coment">
+      <End Role="Feedback" EntitySet="Feedbacks" />
+      <End Role="Solution" EntitySet="Solutions" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Customer">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CustomerCart" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CustomerCard" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Gender" Type="Boolean" />
-    <Property Name="IdentityCartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IdentityCardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="Birthday" Type="DateTime" Precision="0" />
@@ -144,6 +53,92 @@
     <Property Name="Status" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Feedbacks" Relationship="CMSModel.FK_Coment_Customer1" FromRole="Customer" ToRole="Feedback" />
     <NavigationProperty Name="User" Relationship="CMSModel.FK_Customer_User" FromRole="Customer" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IdentityCardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Gender" Type="Boolean" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Birthday" Type="DateTime" Precision="0" />
+    <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="CMSModel.FK_User_Employees" FromRole="Employee" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Feedback">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Customer" Relationship="CMSModel.FK_Coment_Customer1" FromRole="Feedback" ToRole="Customer" />
+    <NavigationProperty Name="FeedbackAttachments" Relationship="CMSModel.FK_FeedbackAttachment_Feedback" FromRole="Feedback" ToRole="FeedbackAttachment" />
+    <NavigationProperty Name="Solutions" Relationship="CMSModel.FK_Solutions_Coment" FromRole="Feedback" ToRole="Solution" />
+  </EntityType>
+  <EntityType Name="FeedbackAttachment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="MimeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FeedbackId" Type="Int32" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="Iden" Type="Guid" />
+    <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Feedback" Relationship="CMSModel.FK_FeedbackAttachment_Feedback" FromRole="FeedbackAttachment" ToRole="Feedback" />
+  </EntityType>
+  <EntityType Name="Solution">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FeedbackId" Type="Int32" />
+    <Property Name="UserSolveId" Type="Int32" />
+    <Property Name="solutions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Feedback" Relationship="CMSModel.FK_Solutions_Coment" FromRole="Solution" ToRole="Feedback" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="Role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Customers" Relationship="CMSModel.FK_Customer_User" FromRole="User" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="CMSModel.FK_User_Employees" FromRole="User" ToRole="Employee" />
   </EntityType>
   <Association Name="FK_Coment_Customer1">
     <End Type="CMSModel.Customer" Role="Customer" Multiplicity="0..1" />
@@ -166,6 +161,42 @@
       </Principal>
       <Dependent Role="Customer">
         <PropertyRef Name="CreateBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Employees">
+    <End Type="CMSModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="CMSModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FeedbackAttachment_Feedback">
+    <End Type="CMSModel.Feedback" Role="Feedback" Multiplicity="0..1" />
+    <End Type="CMSModel.FeedbackAttachment" Role="FeedbackAttachment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feedback">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeedbackAttachment">
+        <PropertyRef Name="FeedbackId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Solutions_Coment">
+    <End Type="CMSModel.Feedback" Role="Feedback" Multiplicity="0..1" />
+    <End Type="CMSModel.Solution" Role="Solution" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feedback">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Solution">
+        <PropertyRef Name="FeedbackId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

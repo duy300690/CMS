@@ -42,7 +42,7 @@
                     }
                 </th>
                 <th>
-                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[3]}_{ViewBag.SortAsc}")">@UserResource.CreateDate</a>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[3]}_{ViewBag.SortAsc}")">@Resource.ModifiedDate</a>
                     @if (CMSRepository.SortList.customerList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
                     {
                         @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
@@ -61,10 +61,14 @@
             {
                 <tr class="@(!item.Status?"disabled":"")" id="customer@(item.Id)">
                     <td data-title="@UserResource.Fullname">@item.FullName</td>
-                    <td data-title="@CustomerResource.MemberCard">@item.CustomerCart</td>
+                    <td data-title="@CustomerResource.MemberCard">@item.CustomerCard</td>
                     <td data-title="@UserResource.Email">@item.Email</td>
-                    <td title="@UserResource.CreateDate">
-                        @if (item.CreateDate.HasValue)
+                    <td title="@Resource.ModifiedDate">
+                        @if (item.ModifiedDate.HasValue)
+                        {
+                            @Html.Raw(Helpers.FormatDisplayDateTime(item.ModifiedDate.Value));
+                        }
+                        else if (item.CreateDate.HasValue)
                         {
                             @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
                         }
@@ -105,6 +109,7 @@
             @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o
                              .AddRouteValue("query", ViewBag.Query)
                              .AddRouteValue("sortColumnName", ViewBag.CurrentSortParam)
+                             .AddRouteValue("province", ViewBag.ProvinceField)
                              .AddRouteValue("status", ViewBag.Active))
         </div>
     }

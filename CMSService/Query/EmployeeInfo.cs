@@ -12,7 +12,7 @@ namespace CMSService.Query
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Avatar { get; set; }
-        public string IdentityCartNumber { get; set; }
+        public string IdentityCardNumber { get; set; }
         public Nullable<bool> Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -31,7 +31,7 @@ namespace CMSService.Query
                             , string firstName
                             , string lastName
                             , string avatar
-                            , string identityCartNumber
+                            , string identityCardNumber
                             , bool? gender
                             , string email
                             , string phone
@@ -50,7 +50,7 @@ namespace CMSService.Query
             FirstName = firstName;
             LastName = lastName;
             Avatar = avatar;
-            IdentityCartNumber = identityCartNumber;
+            IdentityCardNumber = identityCardNumber;
             Gender = gender;
             Email = email;
             Phone = phone;

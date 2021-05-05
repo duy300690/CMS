@@ -206,16 +206,22 @@
     <Compile Include="Feedback.cs">
       <DependentUpon>CMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="FeedbackAttachment.cs">
+      <DependentUpon>CMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="ICustomerRepository.cs" />
     <Compile Include="IEmployeeRepository.cs" />
+    <Compile Include="IFeedbackRepository.cs" />
     <Compile Include="Implementation\CustomerRepository.cs" />
     <Compile Include="Implementation\EmployeeRepository.cs" />
+    <Compile Include="Implementation\FeedbackRepository.cs" />
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\CustomerInfo.cs" />
     <Compile Include="Query\EmployeeInfo.cs" />
+    <Compile Include="Query\FeedbackInfo.cs" />
     <Compile Include="Query\UserInfo.cs" />
     <Compile Include="Definition\SortList.cs" />
     <Compile Include="Solution.cs">

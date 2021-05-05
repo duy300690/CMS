@@ -374,7 +374,7 @@ X.Page.Employee =
                 , firstName = $.trim($("[name=FirstName]", frm).val())
                 , lastName = $.trim($("[name=LastName]", frm).val())
                 , avatar = $.trim($("[name=Avater]", frm).attr('src'))
-                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
+                , code = $.trim($("[name=IdentityCardNumber]", frm).val())
                 , birthday = $("[name=Birthday]", frm).val()
                 , email = $.trim($("[name=Email]", frm).val())
                 , gender = $("[name=Gender]", frm).val()
@@ -410,7 +410,7 @@ X.Page.Employee =
                     FirstName: firstName,
                     LastName: lastName,
                     Avatar: avatar,
-                    IdentityCartNumber: code,
+                    IdentityCardNumber: code,
                     Gender: gender,
                     Email: email,
                     Phone: phone,
@@ -549,7 +549,7 @@ X.Page.Employee =
                 , firstName = $.trim($("[name=FirstName]", frm).val())
                 , lastName = $.trim($("[name=LastName]", frm).val())
                 , avatar = $.trim($("[name=Avater]", frm).attr('src'))
-                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
+                , code = $.trim($("[name=IdentityCardNumber]", frm).val())
                 , birthday = $("[name=Birthday]", frm).val()
                 , email = $.trim($("[name=Email]", frm).val())
                 , gender = $("[name=Gender]", frm).val()
@@ -586,7 +586,7 @@ X.Page.Employee =
                     FirstName: firstName,
                     LastName: lastName,
                     Avatar: avatar,
-                    IdentityCartNumber: code,
+                    IdentityCardNumber: code,
                     Gender: gender,
                     Email: email,
                     Phone: phone,
@@ -818,7 +818,7 @@ X.Page.Customer = {
                 , token = $("[name=__RequestVerificationToken]", frm).val()
                 , firstName = $.trim($("[name=FirstName]", frm).val())
                 , lastName = $.trim($("[name=LastName]", frm).val())
-                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
+                , code = $.trim($("[name=IdentityCardNumber]", frm).val())
                 , birthday = $("[name=Birthday]", frm).val()
                 , email = $.trim($("[name=Email]", frm).val())
                 , gender = $("[name=Gender]", frm).val()
@@ -853,7 +853,160 @@ X.Page.Customer = {
                 {
                     FirstName: firstName,
                     LastName: lastName,
-                    IdentityCartNumber: code,
+                    IdentityCardNumber: code,
+                    Gender: gender,
+                    Email: email,
+                    Phone: phone,
+                    Birthday: birthday,
+                    Province: province,
+                    District: district,
+                    Ward: ward,
+                    Address: address,
+                    __RequestVerificationToken: token
+                }, function () {
+                    X.F.setError("", !0);
+                    btnSbm.prop("disabled", !0).addClass("disabled");
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+
+                    if (code == 1) {
+                        X.Thikbox.remove();
+                        X.Page.getAjaxList(window.location.href, function () { X.F.doEffect($("#" + message.split("#").pop())) })
+                    }
+                    else {
+                        X.F.setError(message, !1);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                    }
+                })
+            return !1;
+        });
+    },
+
+    edit: function () {
+
+        $("#popbox form #Province").off().on("change", function (e) {
+            e.preventDefault();
+            let provinceCode = $(this).val();
+
+            // Begin submit
+            X.A.xhr('/Employee/GetDistrict', !0,
+                {
+                    provinceCode: provinceCode
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+                    if (code == 1) {
+                        let listDistrict = JSON.parse(message)[0],
+                            option = '<option value="">--- Select District ---</option>',
+                            optionWard = '<option value="">--- Select Ward ---</option>';
+
+                        if (X.F.is(listDistrict, "undefined")) {
+                            $("#District").prop("disabled", !0);
+                            $("#Ward").prop("disabled", !0);
+                            $("#District").find('option').remove().end().append(option);
+                            $("#Ward").find('option').remove().end().append(optionWard);
+                            return !1;
+                        }
+
+                        let districts = [];
+                        $.each(listDistrict, function (i, item) {
+                            option += `<option value="${item.Id}">${item.Name}</option>`;
+                            districts.push(item);
+                        });
+
+                        $("#District").prop("disabled", !1);
+                        $("#District").find('option').remove().end().append(option);
+
+                        $("#District").off().on('change', function (e) {
+                            e.preventDefault();
+                            let id = $(this).val();
+                            if (id === '' || X.F.is(id, "undefined")) {
+                                $("#Ward").prop("disabled", !0);
+                                $("#Ward").find('option').remove().end().append(optionWard);
+                                return !1;
+                            }
+
+                            $.each(districts, function (i, v) {
+                                if (v.Id === id) {
+                                    let wards = v.Wards;
+                                    $.each(wards, function (i, item) {
+                                        optionWard += `<option value="${item.Id}">${item.Name}</option>`;
+                                    });
+
+                                    $("#Ward").prop("disabled", !1);
+                                    $("#Ward").find('option').remove().end().append(optionWard);
+                                    return !1;
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        X.F.setError(message);
+                    }
+                })
+            return !1;
+        });
+
+        $("#popbox form").off().on("submit", function (e) {
+            e.preventDefault();
+
+            let frm = $(this)
+                , token = $("[name=__RequestVerificationToken]", frm).val()
+                , id = parseInt($("[name=Id]", frm).val())
+                , firstName = $.trim($("[name=FirstName]", frm).val())
+                , lastName = $.trim($("[name=LastName]", frm).val())
+                , code = $.trim($("[name=IdentityCardNumber]", frm).val())
+                , birthday = $("[name=Birthday]", frm).val()
+                , email = $.trim($("[name=Email]", frm).val())
+                , gender = $("[name=Gender]", frm).val()
+                , phone = $.trim($("[name=Phone]", frm).val())
+                , district = $.trim($("[name=District] option:selected", frm).val())
+                , province = $.trim($("[name=Province] option:selected", frm).val())
+                , ward = $.trim($("[name=Ward] option:selected", frm).val())
+                , address = $.trim($("[name=Address]", frm).val())
+                , btnSbm = $("[type=submit]", frm);
+
+            if (firstName === "" || lastName === "" || email === "" || token === "") {
+                X.F.setError("Type First name + Last name + Email", !1);
+                return !1;
+            }
+
+            if (code === '') {
+                X.F.setError("Type the identity code", !1);
+                return !1;
+            }
+
+            if (!X.F.isEmail(email)) {
+                X.F.setError("Invalid email address", !1);
+                return !1;
+            }
+
+            if (district === '' || province === '' || ward === '' || address === '') {
+                X.F.setError("Type the province + district + ward + address!", !1);
+                return !1;
+            }
+
+            X.A.xhr(frm.prop("action"), !0,
+                {
+                    Id: id,
+                    FirstName: firstName,
+                    LastName: lastName,
+                    IdentityCardNumber: code,
                     Gender: gender,
                     Email: email,
                     Phone: phone,
@@ -935,6 +1088,347 @@ X.Page.Customer = {
                     });
 
                 });
+        });
+
+        /*--- 4. Edit buttons */
+        $("[data-action=edit]").off().on("click", function (e) {
+            e.preventDefault();
+            // Load confirm popbox
+            let id = parseInt($(this).data("id")),
+                action = $(this).data("action");
+            if (isNaN(id) || action == "") {
+                alert("Invalid action id");
+                return !1;
+            }
+
+            let title = "Edit";
+
+            X.A.xhr("/customer/" + action + "/" + id)
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, title, function () {
+                        X.Page.Customer.edit()
+                    });
+
+                });
+        });
+    },
+}
+
+X.Page.Feedback = {
+    search: function (jGridContainerSelector, sortColumnName) {
+        let frm = $("#feedback_search_form")
+            , btnSbm = $("[type=submit]", frm)
+            , query = $.trim($("[name=query]", frm).val())
+            , status = $.trim($("[name=status]", frm).val())
+            , fromtDate = $("[name=fromDate]", frm).val()
+            , toDate = $("[name=toDate]", frm).val()
+            , urlQuery = location.pathname + "?"
+            , urlParams = {};
+
+        (query !== "") ? urlParams.query = X.F.doKeywordFilter(query) : "";
+        (parseInt(status) >= 0) ? urlParams.status = status : "";
+        (sortColumnName !== "") ? urlParams.sortColumnName = sortColumnName : "";
+        (fromtDate && fromtDate !== "") ? urlParams.fromtDate = fromtDate : "";
+        (toDate && toDate !== "") ? urlParams.toDate = toDate : "";
+
+        urlQuery += $.param(urlParams);
+        $("[name=query]", frm).val(urlParams.query);
+
+        X.A.xhr(urlQuery, !1, "",
+            function () {
+                btnSbm.prop("disabled", true);
+            })
+            .done(function (data, textStatus, xhr) {
+                // Check session               
+                X.F.checkSession(xhr);
+
+                // Success return HTML grid
+                jGridContainerSelector = jGridContainerSelector || "#gridcontainer";
+                $(jGridContainerSelector).html(data);
+                X.F.isHistory() ? history.replaceState("", "", urlQuery) : "";
+                btnSbm.prop("disabled", false);
+            });
+
+        return !1;
+    },
+
+    create: function () {
+
+        $("#popbox form").off().on("submit", function (e) {
+            e.preventDefault();
+
+            let frm = $(this)
+                , token = $("[name=__RequestVerificationToken]", frm).val()
+                , firstName = $.trim($("[name=FirstName]", frm).val())
+                , lastName = $.trim($("[name=LastName]", frm).val())
+                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
+                , birthday = $("[name=Birthday]", frm).val()
+                , email = $.trim($("[name=Email]", frm).val())
+                , gender = $("[name=Gender]", frm).val()
+                , phone = $.trim($("[name=Phone]", frm).val())
+                , district = $.trim($("[name=District] option:selected", frm).val())
+                , province = $.trim($("[name=Province] option:selected", frm).val())
+                , ward = $.trim($("[name=Ward] option:selected", frm).val())
+                , address = $.trim($("[name=Street]", frm).val())
+                , btnSbm = $("[type=submit]", frm);
+
+            if (firstName === "" || lastName === "" || email === "" || token === "") {
+                X.F.setError("Type First name + Last name + Email", !1);
+                return !1;
+            }
+
+            if (code === '') {
+                X.F.setError("Type the identity code", !1);
+                return !1;
+            }
+
+            if (!X.F.isEmail(email)) {
+                X.F.setError("Invalid email address", !1);
+                return !1;
+            }
+
+            if (district === '' || province === '' || ward === '' || address === '') {
+                X.F.setError("Type the province + district + ward + address!", !1);
+                return !1;
+            }
+
+            X.A.xhr(frm.prop("action"), !0,
+                {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    IdentityCartNumber: code,
+                    Gender: gender,
+                    Email: email,
+                    Phone: phone,
+                    Birthday: birthday,
+                    Province: province,
+                    District: district,
+                    Ward: ward,
+                    Address: address,
+                    __RequestVerificationToken: token
+                }, function () {
+                    X.F.setError("", !0);
+                    btnSbm.prop("disabled", !0).addClass("disabled");
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+
+                    if (code == 1) {
+                        X.Thikbox.remove();
+                        X.Page.getAjaxList(window.location.href, function () { X.F.doEffect($("#" + message.split("#").pop())) })
+                    }
+                    else {
+                        X.F.setError(message, !1);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                    }
+                })
+            return !1;
+        });
+    },
+
+    check_attachment_file_type: function (fileName) {
+        var ext_class = fileName.split(".").pop().toLowerCase()
+            , ext = "." + ext_class;
+
+        if ($.inArray(ext, ".png,.jpg,.jpeg,.pdf,.doc,.docx".split(",")) === -1) {
+            return !1;
+        }
+        return !0;
+    },
+
+    taskUploadFiles: function (i, file, frm) {
+        setTimeout(function () {
+            X.Page.Feedback.UploadFile(file, frm);
+        }, 1000 * i);
+    },
+
+    UploadFile: function (TargetFile, frm) {
+        // create array to store the buffer chunks
+        var FileChunk = [];
+        // the file object itself that we will work with
+        //var file = TargetFile[0];
+        var file = TargetFile;
+        // set up other initial vars
+        var MaxFileSizeMB = 1;
+        var BufferChunkSize = MaxFileSizeMB * (1024 * 1024);
+        var ReadBuffer_Size = 1024;
+        var FileStreamPos = 0;
+        // set the initial chunk length
+        var EndPos = BufferChunkSize;
+        var Size = file.size;
+        //Generate Id          
+        var tokenId = X.F.generateRandomId(10);
+
+        // add to the FileChunk array until we get to the end of the file
+        while (FileStreamPos < Size) {
+            // "slice" the file from the starting position/offset, to  the required length
+            FileChunk.push(file.slice(FileStreamPos, EndPos));
+            FileStreamPos = EndPos; // jump by the amount read
+            EndPos = FileStreamPos + BufferChunkSize; // set next chunk length
+        }
+        // get total number of "files" we will be sending
+        var totalParts = FileChunk.length;
+        var partCount = 0;
+        var successFileCount = 0;
+        var totalPercent = 0;
+
+        $('#progress').show();
+
+        // loop through, pulling the first item from the array each time and sending it
+        while (chunk = FileChunk.shift()) {
+            partCount++;
+            // file name convention
+            var FilePartName = tokenId + "_" + file.name + ".part_" + partCount + "." + totalParts;
+            // send the file
+            X.Page.Feedback.UploadFileChunk(chunk, FilePartName, frm, function (dataOutput) {
+                var result = JSON.parse(dataOutput),
+                    message = result.message,
+                    code = parseInt(result.code) || 0;
+
+                successFileCount += code;
+
+                var percentage = Math.round(successFileCount / totalParts * 100);
+                totalPercent += percentage;
+                if (totalPercent > 100) { totalPercent = 100 };
+
+                $("#progressbar").animate({ width: totalPercent + '%' });
+
+                if (successFileCount === totalParts) {
+                    setTimeout(function () {
+                        $('#progress').hide();
+                        var finalName = message.substring(0, message.lastIndexOf('.part_'))
+                            , realFileName = finalName.substring(finalName.indexOf('_') + 1, finalName.length);
+                        //, shortFileName = X.F.showTextLengh(realFileName, 32);
+
+                        var linkFileHTML = '<li class="list-group-item">';
+                        linkFileHTML += ' <a class="attr-file hint-top" data-hint="' + realFileName + '"';
+                        linkFileHTML += 'href="/Temp/' + finalName + '"';
+                        linkFileHTML += ' name="AttachmentName"';
+                        linkFileHTML += ' data-name="' + finalName + '"';
+                        linkFileHTML += ' target="_blank">';
+                        linkFileHTML += ' <div class="crop-text">' + realFileName + '</div>' + '</a>';
+                        linkFileHTML += ' <span class="hint-top pointer" data-hint="Remove">'
+                        linkFileHTML += ' <i class="fas fa-trash-alt"></i>';
+                        linkFileHTML += ' </span>';
+                        linkFileHTML += ' </li>';
+
+                        $("#attach-files").append(linkFileHTML);
+
+                        $("ul#attach-files li span").off().on("click", function (e) {
+                            e.preventDefault();
+                            $(this).parent("li").remove();
+
+                            // unbind action file upload change
+                            $("#input_attachment_file").val('');
+                        });
+
+                    }, 300);
+                }
+            });
+        }
+    },
+
+    UploadFileChunk: function (Chunk, FileName, frm, callback) {
+        var FD = new FormData()
+            , token = $("[name=__RequestVerificationToken]", frm).val();
+
+        FD.append('file', Chunk, FileName);
+        FD.append('__RequestVerificationToken', token);
+
+        $.ajax({
+            type: "POST",
+            url: "/Feedback/uploadfile",
+            contentType: false,
+            processData: false,
+            data: FD,
+            beforeSend: function (jqXHR, settings) {
+            },
+            success: function (data) {
+                callback(data);
+            },
+            error: function (xhr, status, p3, p4) {
+
+            }
+        });
+    },
+
+
+    init: function () {
+        let that = this;
+        /*--- 1. Search buttons */
+        $("#feedback_search_form").off().on("submit", function () {
+            that.search("#gridcontainer");
+        });
+
+        /*--- 2. Create buttons */
+        $("#create").off().on("click", function (e) {
+            e.preventDefault();
+
+            // Get ajax create form
+            X.A.xhr("/feedback/create")
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, "Create", function () {
+                        //that.create();
+                    });
+                });
+        });
+    },
+
+    attachFiles: function () {
+        $("#attachmentContainer button").off().on("click", function () {
+            $("#input_attachment_file").click();
+        });
+
+        $("#input_attachment_file").off().on("change", function (e) {
+            e.preventDefault();
+
+            var frm = $("#create_feedback_form")
+                , files = e.target.files;
+
+            // if 'li' tag is over 3, client don't allow user upload                
+            var liTag = $("ul#attach-files li").length;
+            if (liTag + files.length > 3) {
+                X.Thikbox.load("just allow upload 3 files!");
+                return !1;
+            }
+
+            if (files.length > 3) {
+                X.ThikBox.load("just allow upload 3 files");
+                return !1;
+            }
+
+            // loop to check file
+            var totalFileSize = 0;
+            for (var i = 0; i < files.length; i++) {
+                // check file type
+                if (!X.Page.Feedback.check_attachment_file_type(files[i].name)) {
+                    X.ThikBox.load("Not allow upload this file type!");
+                    return !1;
+                }
+                totalFileSize += files[i].size;
+            }
+
+            // check file size
+            if (totalFileSize > 10485760) {
+                X.ThikBox.load("Total file size over 1MB");
+                return !1;
+            }
+
+            // loop to upload file
+            for (var i = 0; i < files.length; i++) {
+                X.Page.Feedback.taskUploadFiles(i, files[i], frm);
+            }
         });
     },
 }

@@ -12,7 +12,7 @@ namespace CMSRepository.Query
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Avatar { get; private set; }
-        public string IdentityCartNumber { get; private set; }
+        public string IdentityCardNumber { get; private set; }
         public Nullable<bool> Gender { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
@@ -31,7 +31,7 @@ namespace CMSRepository.Query
                             , string firstName
                             , string lastName
                             , string avatar
-                            , string identityCartNumber
+                            , string identityCardNumber
                             , bool? gender
                             , string email
                             , string phone
@@ -50,7 +50,7 @@ namespace CMSRepository.Query
             FirstName = firstName;
             LastName = lastName;
             Avatar = avatar;
-            IdentityCartNumber = identityCartNumber;
+            IdentityCardNumber = identityCardNumber;
             Gender = gender;
             Email = email;
             Phone = phone;
@@ -100,7 +100,7 @@ namespace CMSRepository.Query
             FirstName = firstName;
             LastName = lastName;
             Avatar = avatar;
-            IdentityCartNumber = identityCartNumber;
+            IdentityCardNumber = identityCartNumber;
             Gender = gender;
             Email = email;
             Phone = phone;

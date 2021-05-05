@@ -36,11 +36,11 @@ namespace CMSService.Implementation
                 {
                     customers.Add(new CustomerInfo(
                         item.Id,
-                        item.CustomerCart,
+                        item.CustomerCard,
                         item.FirstName,
                         item.LastName,
                         item.Gender,
-                        item.IdentityCartNumber,
+                        item.IdentityCardNumber,
                         item.Phone,
                         item.Email,
                         item.Birthday,
@@ -69,7 +69,7 @@ namespace CMSService.Implementation
 
             if (string.IsNullOrEmpty(customer.FirstName)) throw new ArgumentNullException("First name null");
             if (string.IsNullOrEmpty(customer.LastName)) throw new ArgumentNullException("Last name null");
-            if (string.IsNullOrEmpty(customer.IdentityCartNumber)) throw new ArgumentNullException("IdentityCartNumber null");
+            if (string.IsNullOrEmpty(customer.IdentityCardNumber)) throw new ArgumentNullException("IdentityCardNumber null");
             if (string.IsNullOrEmpty(customer.Email)) throw new ArgumentNullException("Email null");
             if (string.IsNullOrEmpty(customer.Province)
                 || string.IsNullOrEmpty(customer.District)
@@ -79,11 +79,11 @@ namespace CMSService.Implementation
 
             CMSRepository.Query.CustomerInfo customerInfo = new CMSRepository.Query.CustomerInfo(
                 customer.Id
-                , customer.CustomerCart
+                , customer.CustomerCard
                 , customer.FirstName
                 , customer.LastName
                 , customer.Gender
-                , customer.IdentityCartNumber
+                , customer.IdentityCardNumber
                 , customer.Phone
                 , customer.Email
                 , customer.Birthday
@@ -109,11 +109,11 @@ namespace CMSService.Implementation
             var customer = _customerRepository.GetById(id, status);
             CustomerInfo model = new CustomerInfo(
                                                   customer.Id,
-                                                  customer.CustomerCart,
+                                                  customer.CustomerCard,
                                                   customer.FirstName,
                                                   customer.LastName,
                                                   customer.Gender,
-                                                  customer.IdentityCartNumber,
+                                                  customer.IdentityCardNumber,
                                                   customer.Phone,
                                                   customer.Email,
                                                   customer.Birthday,
@@ -163,6 +163,32 @@ namespace CMSService.Implementation
             if (customer == null) throw new ArgumentOutOfRangeException("Customer not found");
 
             customer.Deactivate();
+            _customerRepository.Save(customer, userId);
+        }
+
+        public void Edit(CustomerInfo model, int userId)
+        {
+            if (model == null) throw new ArgumentOutOfRangeException("Employee");
+
+            var customer = _customerRepository.GetById(model.Id, null);
+            if (customer == null) throw new ArgumentNullException("Employee");
+            customer.ChangeInfo(
+                                model.Id,
+                                model.FirstName,
+                                model.LastName,                             
+                                model.IdentityCardNumber,
+                                model.Gender,
+                                model.Email,
+                                model.Phone,
+                                model.Birthday,
+                                model.Province,
+                                model.District,
+                                model.Ward,
+                                model.Address,
+                                model.ModifiedDate,
+                                model.ModifiedBy,
+                                model.Status);
+
             _customerRepository.Save(customer, userId);
         }
     }

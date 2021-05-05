@@ -24,7 +24,7 @@ namespace CMSRepository
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Avatar { get; set; }
-        public string IdentityCartNumber { get; set; }
+        public string IdentityCardNumber { get; set; }
         public Nullable<bool> Gender { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

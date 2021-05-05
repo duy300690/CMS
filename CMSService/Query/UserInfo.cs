@@ -11,6 +11,7 @@ namespace CMSService.Query
         public int Id { get; }
         public int? EmployeeId { get; }
         public string EmployeeName { get; }
+        public string Avatar { get; }
         public string Username { get; }
         public string Password { get; }
         public DateTime? CreateDate { get; }
@@ -25,6 +26,7 @@ namespace CMSService.Query
             int id
             , int? employeeId
             , string employeeName
+            , string avatar
             , string userName
             , string password
             , DateTime? createDate
@@ -38,6 +40,7 @@ namespace CMSService.Query
             Id = id;
             EmployeeId = employeeId;
             EmployeeName = employeeName;
+            Avatar = avatar;
             Username = userName;
             Password = password;
             CreateDate = createDate;

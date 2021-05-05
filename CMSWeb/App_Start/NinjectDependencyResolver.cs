@@ -38,6 +38,9 @@ namespace CMSWeb.App_Start
 
             kernel.Bind<ICustomerRepository>().To<CustomerRepository>();
             kernel.Bind<ICustomerService>().To<CustomerService>();
+
+            kernel.Bind<IFeedbackRepository>().To<FeedbackRepository>();
+            kernel.Bind<IFeedbackService>().To<FeedbackService>();
         }
     }
 }

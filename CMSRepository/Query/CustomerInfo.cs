@@ -9,11 +9,11 @@ namespace CMSRepository.Query
     public class CustomerInfo
     {
         public int Id { get; private set; }
-        public string CustomerCart { get; private set; }
+        public string CustomerCard { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public Nullable<bool> Gender { get; private set; }
-        public string IdentityCartNumber { get; private set; }
+        public string IdentityCardNumber { get; private set; }
         public string Phone { get; private set; }
         public string Email { get; private set; }
         public Nullable<System.DateTime> Birthday { get; private set; }
@@ -29,7 +29,7 @@ namespace CMSRepository.Query
         public bool Status { get; private set; }
 
         public CustomerInfo(int id
-                            , string customerCart
+                            , string customerCard
                             , string firstName
                             , string lastName
                             , bool? gender
@@ -49,11 +49,11 @@ namespace CMSRepository.Query
                             , bool status)
         {
             Id = id;
-            CustomerCart = customerCart;
+            CustomerCard = customerCard;
             FirstName = firstName;
             LastName = lastName;
             Gender = gender;
-            IdentityCartNumber = identityCode;
+            IdentityCardNumber = identityCode;
             Phone = phone;
             Email = email;
             Birthday = birthday;
@@ -80,6 +80,38 @@ namespace CMSRepository.Query
         public void Deactivate()
         {
             Status = false;
+        }
+        public void ChangeInfo(int id
+                        , string firstName
+                        , string lastName
+                        , string identityCardNumber
+                        , bool? gender
+                        , string email
+                        , string phone
+                        , DateTime? birthdate
+                        , string province
+                        , string district
+                        , string ward
+                        , string address
+                        , DateTime? modifiedDate
+                        , int? modifiedBy
+                        , bool status)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            IdentityCardNumber = identityCardNumber;
+            Gender = gender;
+            Email = email;
+            Phone = phone;
+            Birthday = birthdate;
+            Province = province;
+            District = district;
+            Ward = ward;
+            Address = address;
+            ModifiedDate = modifiedDate;
+            ModifiedBy = modifiedBy;
+            Status = status;
         }
     }
 }

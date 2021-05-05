@@ -104,3 +104,4 @@ D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.csproj.CopyComplete
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.dll
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.pdb
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.Language.CustomerResource.resources
+D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.Language.FeedbackResource.resources
