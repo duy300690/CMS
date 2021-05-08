@@ -21,5 +21,9 @@ namespace CMSRepository
         FeedbackInfo GetById(int id, byte? status);
 
         void Save(FeedbackInfo feedback, int userId);
+
+        void SaveListAttachment(List<AttachmentInfo> attachments);
+        List<ViewAttachmentInfo> GetAttachmentFiles(int feedbackId);
+        DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId);
     }
 }

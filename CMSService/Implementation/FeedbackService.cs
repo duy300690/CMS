@@ -34,21 +34,72 @@ namespace CMSService.Implementation
             {
                 foreach (var item in data.Item1)
                 {
-                    listFeedback.Add(new FeedbackInfo(
-                        item.Id,
-                        item.CustomerId,
-                        item.Title,
-                        item.Content,
-                        item.CreateDate,
-                        item.CreateBy,
-                        item.ModifiedDate,
-                        item.ModifiedBy,
-                        item.Status
-                        ));
+                    FeedbackInfo feedback = new FeedbackInfo(
+                       item.Id,
+                       item.CustomerId,
+                       item.Title,
+                       item.Content,
+                       item.CreateDate,
+                       item.CreateBy,
+                       item.ModifiedDate,
+                       item.ModifiedBy,
+                       item.Status
+                       );
+
+                    feedback.SetCustomerMemberCard(item.CustomerMemberCard);
+                    feedback.SetCustomerName(item.CustomerName);
+
+                    if (item.Attachments != null && item.Attachments.Any())
+                        feedback.SetAttachment(item.Attachments);
+
+                    listFeedback.Add(feedback);
                 }
                 return Tuple.Create(listFeedback, data.Item2);
             }
             return Tuple.Create(listFeedback, 0);
         }
+
+        public int Create(FeedbackInfo feedback, int userId)
+        {
+            if (feedback is null)
+            {
+                throw new ArgumentNullException(nameof(feedback));
+            }
+
+            if (!feedback.CustomerId.HasValue || feedback.CustomerId.Value < 1)
+                throw new ArgumentNullException("Customer");
+            if (string.IsNullOrEmpty(feedback.Title)) throw new ArgumentNullException("Title");
+            if (string.IsNullOrEmpty(feedback.Content)) throw new ArgumentNullException("Content");
+
+            CMSRepository.Query.FeedbackInfo feedbackInfo = new CMSRepository.Query.FeedbackInfo(
+                                                                feedback.Id
+                                                                , feedback.CustomerId
+                                                                , feedback.Title
+                                                                , feedback.Content
+                                                                , feedback.CreateDate
+                                                                , feedback.CreateBy
+                                                                , feedback.ModifiedDate
+                                                                , feedback.ModifiedBy
+                                                                , feedback.Status);
+
+            _feedbackRepository.Save(feedbackInfo, userId);
+            return feedbackInfo.Id;
+        }
+
+        public void SaveListAttachment(List<CMSRepository.Query.AttachmentInfo> attachments)
+        {
+            _feedbackRepository.SaveListAttachment(attachments);
+        }
+
+        public List<CMSRepository.Query.ViewAttachmentInfo> GetAttachmentFiles(int feedbackId)
+        {
+            return _feedbackRepository.GetAttachmentFiles(feedbackId);
+        }
+
+        public CMSRepository.Query.DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId)
+        {
+            return _feedbackRepository.GetAttachmentByIden(iden, feedbackId);
+        }
+
     }
 }

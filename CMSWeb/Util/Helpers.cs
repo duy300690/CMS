@@ -1,5 +1,6 @@
 ﻿using CMSWeb.Language;
 using CMSWeb.Models;
+using Hangfire;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -171,6 +172,78 @@ namespace CMSWeb.Util
             if (date.Year > 1900)
                 return date;
             return null;
+        }
+
+        public static void DeleteTemporaryAttachmentsInBackgroundThread(string directoryPath, string filename)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            try
+            {
+                //HangFile
+                BackgroundJob.Enqueue(() => DeleteAttachment(directoryPath, filename));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
+        }
+
+        private static void DeleteAttachment(string directoryPath, string filename)
+        {
+
+            try
+            {
+                //Delete main file
+                string filepath = Path.Combine(directoryPath, filename);
+                if (System.IO.File.Exists(filepath))
+                    System.IO.File.Delete(filepath);
+
+                //Delete parts file
+                var dir = new DirectoryInfo(directoryPath);
+
+                foreach (var file in dir.EnumerateFiles($"{filename}.part*"))
+                {
+                    file.Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static string FormatAttachment(string file)
+        {
+            if (string.IsNullOrEmpty(file)) return string.Empty;
+
+            if (file.Contains("_"))
+            {
+                return file.Substring(file.IndexOf("_") + 1, file.Length - file.IndexOf("_") - 1);
+            }
+
+            return file;
+        }
+
+        public static byte[] ReadFile(string filePath)
+        {
+            byte[] buffer;
+            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            try
+            {
+                int length = (int)fileStream.Length;  // get file length
+                buffer = new byte[length];            // create buffer
+                int count;                            // actual number of bytes read
+                int sum = 0;                          // total number of bytes read
+
+                // read until Read method returns 0 (end of the stream has been reached)
+                while ((count = fileStream.Read(buffer, sum, length - sum)) > 0)
+                    sum += count;  // sum is a buffer offset for next reading
+            }
+            finally
+            {
+                fileStream.Close();
+            }
+            return buffer;
         }
     }
 }

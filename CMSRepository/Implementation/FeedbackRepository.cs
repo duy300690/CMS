@@ -46,14 +46,21 @@ namespace CMSRepository.Implementation
             if (!string.IsNullOrEmpty(query))
             {
                 feedbacks = feedbacks.Where(p => p.Title.Contains(query)
-                || p.Content.Contains(query));
+                || p.Content.Contains(query)
+                || p.Customer.IdentityCardNumber.Contains(query)
+                || p.Customer.Email.Contains(query)
+                || p.Customer.CustomerCard.Contains(query)
+                || p.Customer.FirstName.Contains(query)
+                || p.Customer.LastName.Contains(query));
             }
             if (from.HasValue)
                 feedbacks = feedbacks.Where(p => p.CreateDate >= from.Value);
 
             if (to.HasValue)
+            {
+                to = to.Value.AddDays(1);
                 feedbacks = feedbacks.Where(p => p.CreateDate <= to.Value);
-
+            }
 
             // Sort data            
             string orderByStr = $"{sortColumn} {sortType}";
@@ -72,7 +79,7 @@ namespace CMSRepository.Implementation
             List<FeedbackInfo> listFeedback = new List<FeedbackInfo>();
             foreach (var item in feedbacks)
             {
-                listFeedback.Add(new FeedbackInfo(
+                var feedback = new FeedbackInfo(
                     item.Id,
                     item.CustomerId,
                     item.Title,
@@ -82,7 +89,31 @@ namespace CMSRepository.Implementation
                     item.ModifiedDate,
                     item.ModifiedBy,
                     item.Status
-                    ));
+                    );
+
+                feedback.SetCustomerMemberCard(item.Customer.CustomerCard);
+                feedback.SetCustomerName($"{item.Customer.FirstName} {item.Customer.LastName}");
+                if (item.FeedbackAttachments != null && item.FeedbackAttachments.Count > 0)
+                {
+                    List<ViewAttachmentInfo> attachments = new List<ViewAttachmentInfo>();
+                    foreach (var attachFile in item.FeedbackAttachments)
+                    {
+                        attachments.Add(new ViewAttachmentInfo()
+                        {
+                            Created = attachFile.CreateDate ?? DateTime.Now,
+                            DownloadLink = attachFile.Name,
+                            Iden = attachFile.Iden ?? new Guid(),
+                            MimeType = attachFile.MimeType,
+                            Name = attachFile.Name,
+                            FeedbackId = attachFile.FeedbackId ?? 0
+
+                        });
+                    }
+                    feedback.SetAttachment(attachments);
+                }
+
+                listFeedback.Add(feedback);
+
             }
             return Tuple.Create(listFeedback, totalRows);
         }
@@ -165,6 +196,68 @@ namespace CMSRepository.Implementation
             };
 
             return model;
+        }
+
+        public void SaveListAttachment(List<AttachmentInfo> attachments)
+        {
+            if (attachments.Any())
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var newAttachments = attachments.Select(p => new FeedbackAttachment
+                        {
+                            Id = p.Id,
+                            Iden = p.Iden,
+                            FeedbackId = p.FeedbackId,
+                            Name = p.Name,
+                            MimeType = p.MimeType,
+                            FileContent = p.FileContent,
+                            CreateDate = DateTime.Now,
+                        }).ToList();
+
+                        _context.FeedbackAttachments.AddRange(newAttachments);
+
+                        _context.SaveChanges();
+
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                    }
+
+                }
+            }
+
+        }
+
+        public List<ViewAttachmentInfo> GetAttachmentFiles(int feedbackId)
+        {
+            return (from p in _context.FeedbackAttachments
+                    where p.FeedbackId == feedbackId
+                    select new ViewAttachmentInfo
+                    {
+                        Iden = p.Iden ?? new Guid(),
+                        Name = p.Name,
+                        MimeType = p.MimeType,
+                        Created = p.CreateDate ?? new DateTime()
+                    }).ToList();
+        }
+
+        public DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId)
+        {
+            return (from p in _context.FeedbackAttachments
+                    where p.Iden == iden && p.FeedbackId == feedbackId
+                    select new DownloadAttachmentInfo
+                    {
+                        Iden = p.Iden ?? new Guid(),
+                        Name = p.Name,
+                        MimeType = p.MimeType,
+                        FileContent = p.FileContent
+                    }).FirstOrDefault();
+
         }
     }
 }

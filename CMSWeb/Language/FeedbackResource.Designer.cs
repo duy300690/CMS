@@ -79,6 +79,15 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not send feedback.
+        /// </summary>
+        public static string FeedbackError {
+            get {
+                return ResourceManager.GetString("FeedbackError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No feedback found!.
         /// </summary>
         public static string FeedbackNotFound {

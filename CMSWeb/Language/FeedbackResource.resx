@@ -123,6 +123,9 @@
   <data name="CreateDate" xml:space="preserve">
     <value>Create date</value>
   </data>
+  <data name="FeedbackError" xml:space="preserve">
+    <value>Can not send feedback</value>
+  </data>
   <data name="FeedbackNotFound" xml:space="preserve">
     <value>No feedback found!</value>
   </data>

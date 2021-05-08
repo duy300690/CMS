@@ -8,9 +8,10 @@
     <table class="table table-bordered table-striped table-hover responsive-table">
         <thead class="thead-light">
             <tr>
+                <th>@CustomerResource.MemberCard</th>
                 <th>
-                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[1]}_{ViewBag.SortAsc}")">@FeedbackResource.Title</a>
-                    @if (CMSRepository.SortList.feedbackList[1].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[4]}_{ViewBag.SortAsc}")">@CustomerResource.CustomerName</a>
+                    @if (CMSRepository.SortList.feedbackList[4].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
                     {
                         @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
                     }
@@ -20,8 +21,8 @@
                     }
                 </th>
                 <th>
-                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[3]}_{ViewBag.SortAsc}")">@FeedbackResource.Status</a>
-                    @if (CMSRepository.SortList.feedbackList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[1]}_{ViewBag.SortAsc}")">@FeedbackResource.Title</a>
+                    @if (CMSRepository.SortList.feedbackList[1].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
                     {
                         @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
                     }
@@ -41,7 +42,17 @@
                         <i class="fas fa-sort"></i>
                     }
                 </th>
-                <th>@Resource.Action</th>
+                <th>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[3]}_{ViewBag.SortAsc}")">@FeedbackResource.Status</a>
+                    @if (CMSRepository.SortList.feedbackList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
+                    {
+                        @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -49,8 +60,17 @@
             @foreach (var item in Model)
             {
                 <tr id="feedback@(item.Id)">
-                    <td data-title="@FeedbackResource.Title">@item.Title</td>
-                    <td data-title="@FeedbackResource.Status">@item.Status</td>
+                    <td>@item.CustomerMemberCard</td>
+                    <td>@item.CustomerName</td>
+                    <td data-title="@FeedbackResource.Title">
+                        @item.Title
+                        @if (item.Attachments != null && item.Attachments.Any())
+                        {
+                            <a href="#" data-action="view-attachment" data-feedback_id="@item.Id">
+                                <i class="fas fa-paperclip"></i>
+                            </a>
+                        }
+                    </td>
                     <td title="@FeedbackResource.CreateDate">
                         @if (item.ModifiedDate.HasValue)
                         {
@@ -61,20 +81,25 @@
                             @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
                         }
                     </td>
-                    <td data-title="@Resource.Action">
+                    <td data-title="@FeedbackResource.Status">
                         @if (item.Status == 0)
                         {
-                            <a class="btn btn-danger btn-sm mr-2 my-1"
-                               href="#" data-action="peding" data-id="@item.Id">
-                                <i class="fas fa-trash-alt"></i>
+                            <a class="btn btn-outline-danger btn-sm mr-2 my-1"
+                               href="#" data-action="new" data-id="@item.Id">
+                                @Resource.New
+                            </a>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <a class="btn btn-outline-warning btn-sm mr-2 my-1"
+                               href="#" data-action="pending" data-id="@item.Id">
                                 @Resource.Pending
                             </a>
                         }
                         else if (item.Status == 2)
                         {
-                            <a class="btn btn-success btn-sm mr-2 my-1"
+                            <a class="btn btn-outline-success btn-sm mr-2 my-1"
                                href="#" data-action="complete" data-id="@item.Id">
-                                <i class="fas fa-external-link-alt"></i>
                                 @Resource.Complete
                             </a>
                         }
@@ -108,7 +133,8 @@ else
 
 <script>
     $(document).ready(function () {
-        //X.Page.Customer.init();
-        //X.Page.Customer.sort_customer();
+        X.Page.Feedback.init();
+        X.Page.Feedback.sort();
+        X.Page.Feedback.view_attachment();
     });
 </script>

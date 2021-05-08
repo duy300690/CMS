@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CMSWeb.Language;
 
 namespace CMSWeb.Controllers
 {
@@ -73,7 +74,7 @@ namespace CMSWeb.Controllers
 
             foreach (var item in data.Item1)
             {
-                listFeedback.Add(new FeedbackModel()
+                FeedbackModel feedback = new FeedbackModel()
                 {
                     Id = item.Id,
                     CustomerId = item.CustomerId,
@@ -83,8 +84,16 @@ namespace CMSWeb.Controllers
                     CreateDate = item.CreateDate,
                     ModifiedBy = item.ModifiedBy,
                     ModifiedDate = item.ModifiedDate,
-                    Status = item.Status
-                });
+                    Status = item.Status,
+                };
+                feedback.CustomerMemberCard = item.CustomerMemberCard;
+                feedback.CustomerName = item.CustomerName;
+
+                feedback.Attachments = new List<CMSRepository.Query.ViewAttachmentInfo>();
+                if (item.Attachments != null && item.Attachments.Any())
+                    feedback.Attachments = item.Attachments;
+
+                listFeedback.Add(feedback);
             }
 
             IPagedList feedbackPagedList = listFeedback.ToPagedList(pageIndex - 1, PageSizeDefault, data.Item2);
@@ -165,6 +174,100 @@ namespace CMSWeb.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Create(FeedbackModel model)
+        {
+            string statusMessage = string.Empty;
+            string url = string.Empty;
+            int statusCode = 0;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (!model.CustomerId.HasValue || model.CustomerId < 1)
+                        statusMessage = CustomerResource.CustomertNotFound;
+
+                    if (_customerService.GetById(model.CustomerId.Value, null) == null)
+                        statusMessage = CustomerResource.CustomertNotFound;
+
+                    if (!string.IsNullOrEmpty(statusMessage))
+                        return Json(XUtil.JsonDie(statusMessage, statusCode));
+
+                    CMSService.Query.FeedbackInfo feedback = new CMSService.Query.FeedbackInfo(
+                                                            model.Id
+                                                            , model.CustomerId
+                                                            , model.Title
+                                                            , model.Content
+                                                            , model.CreateDate
+                                                            , model.CreateBy
+                                                            , model.ModifiedDate
+                                                            , model.ModifiedBy
+                                                            , model.Status
+                                                            );
+
+                    int feedbackId = _feedbackService.Create(feedback, SessionContext.GetUserLogin().Id);
+
+                    if (feedbackId == 0)
+                        return Json(XUtil.JsonDie(FeedbackResource.FeedbackError, statusCode));
+
+                    //Save attachments
+                    List<CMSRepository.Query.AttachmentInfo> attachments = new List<CMSRepository.Query.AttachmentInfo>();
+                    if (model.AttachFiles != null && model.AttachFiles.Any())
+                    {
+                        try
+                        {
+                            string tmpFolder = tempFolder;
+                            var tmpPath = Server.MapPath(tmpFolder);
+                            for (int i = 0; i < model.AttachFiles.Length; i++)
+                            {
+                                if (!string.IsNullOrEmpty(model.AttachFiles[i]))
+                                {
+                                    string fileName = $"{ model.AttachFiles[i]}";
+                                    string path = Path.Combine(tmpPath, fileName);
+
+                                    var iden = Guid.NewGuid();
+                                    var attachment = new CMSRepository.Query.AttachmentInfo
+                                    {
+                                        FeedbackId = feedbackId,
+                                        Iden = iden,
+                                        Name = Util.Helpers.FormatAttachment(model.AttachFiles[i]),
+                                        Created = DateTime.Now,
+                                        FileContent = Util.Helpers.ReadFile(path),
+                                        MimeType = Path.GetExtension(path),
+                                        Id = 0
+                                    };
+
+                                    attachments.Add(attachment);
+
+                                    Util.Helpers.DeleteTemporaryAttachmentsInBackgroundThread(tmpPath, fileName);
+                                }
+                            }
+                            _feedbackService.SaveListAttachment(attachments);
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                    }
+
+                    statusCode = 1;
+                    statusMessage = Request.Url.AbsolutePath + "#feedback" + feedbackId;
+
+                    return Json(XUtil.JsonDie(statusMessage, statusCode));
+                }
+                else
+                {
+                    return Json(XUtil.JsonDie(FeedbackResource.FeedbackError, statusCode));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
+        }
+
         [HttpPost]
         public ActionResult CheckCustomerCode(string code)
         {
@@ -176,6 +279,20 @@ namespace CMSWeb.Controllers
             string jsonObj = XUtil.Object2Json(model);
 
             return Json(XUtil.JsonDie(jsonObj, 1));
+        }
+
+        public ActionResult ViewAttachment(int feedbackId)
+        {
+            ViewBag.FeedbackId = feedbackId;
+            var attachements = _feedbackService.GetAttachmentFiles(feedbackId);
+
+            return PartialView("_AttachmentGridPartial", attachements);
+        }
+
+        public FileResult Download(Guid iden, int feedbackId)
+        {
+            var attachment = _feedbackService.GetAttachmentByIden(iden, feedbackId);
+            return File(attachment.FileContent, System.Net.Mime.MediaTypeNames.Application.Octet, attachment.Name);
         }
     }
 }

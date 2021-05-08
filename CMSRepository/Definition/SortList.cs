@@ -12,6 +12,6 @@ namespace CMSRepository
         public static string[] UserList = { "Id", "Username", "Email", "CreateDate", "Role" };
         public static string[] employeeList = { "Id", "FirstName", "Email", "CreateDate" };
         public static string[] customerList = { "Id", "FirstName", "Email", "CreateDate", "CustomerCart" };
-        public static string[] feedbackList = { "Id", "Title", "CreateDate", "Status" };
+        public static string[] feedbackList = { "Id", "Title", "CreateDate", "Status", "Customer.FirstName" };
     }
 }

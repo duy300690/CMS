@@ -1154,6 +1154,15 @@ X.Page.Feedback = {
         return !1;
     },
 
+    sort: function () {
+        $("[data-action=sort]").off().on("click", function (e) {
+            e.preventDefault();
+            let sortColumnName = $(this).data("field");
+
+            X.Page.Feedback.search("#gridcontainer", sortColumnName);
+        });
+    },
+
     create: function () {
         $("[data-action=check]").off().on("click", function (e) {
             e.preventDefault();
@@ -1175,7 +1184,7 @@ X.Page.Feedback = {
                 })
                 .done(function (data, textStatus, xhr) {
                     // Check session
-                    X.F.checkSession(xhr);                    
+                    X.F.checkSession(xhr);
                     var data = JSON.parse(data),
                         message = data.message,
                         code = parseInt(data.code);
@@ -1185,6 +1194,7 @@ X.Page.Feedback = {
                         let obj = JSON.parse(message);
 
                         $("[name=CustomerName]", frm).text(obj.FullName);
+                        $("[name=CustomerId]", frm).val(obj.Id);
                         btnSbm.prop("disabled", !1).removeClass("disabled");
                         X.F.setError("", !1);
                     }
@@ -1201,52 +1211,38 @@ X.Page.Feedback = {
 
             let frm = $(this)
                 , token = $("[name=__RequestVerificationToken]", frm).val()
-                , firstName = $.trim($("[name=FirstName]", frm).val())
-                , lastName = $.trim($("[name=LastName]", frm).val())
-                , code = $.trim($("[name=IdentityCartNumber]", frm).val())
-                , birthday = $("[name=Birthday]", frm).val()
-                , email = $.trim($("[name=Email]", frm).val())
-                , gender = $("[name=Gender]", frm).val()
-                , phone = $.trim($("[name=Phone]", frm).val())
-                , district = $.trim($("[name=District] option:selected", frm).val())
-                , province = $.trim($("[name=Province] option:selected", frm).val())
-                , ward = $.trim($("[name=Ward] option:selected", frm).val())
-                , address = $.trim($("[name=Street]", frm).val())
+                , customerId = parseInt($("[name=CustomerId]", frm).val())
+                , title = $.trim($("[name=Title]", frm).val())
+                , content = $.trim($("[name=Content]", frm).val())
                 , btnSbm = $("[type=submit]", frm);
 
-            if (firstName === "" || lastName === "" || email === "" || token === "") {
-                X.F.setError("Type First name + Last name + Email", !1);
+            let arrAttachment = [];
+            $(".attr-file").each(function (i, v) {
+                arrAttachment.push($(this).attr("data-name"));
+            });
+
+
+            if (title === "" || token === "") {
+                X.F.setError("Type title", !1);
                 return !1;
             }
 
-            if (code === '') {
-                X.F.setError("Type the identity code", !1);
+            if (content === "") {
+                X.F.setError("Type Content", !1);
                 return !1;
             }
 
-            if (!X.F.isEmail(email)) {
-                X.F.setError("Invalid email address", !1);
-                return !1;
-            }
-
-            if (district === '' || province === '' || ward === '' || address === '') {
-                X.F.setError("Type the province + district + ward + address!", !1);
+            if (customerId < 1) {
+                X.F.setError("Please check customer card", !1);
                 return !1;
             }
 
             X.A.xhr(frm.prop("action"), !0,
                 {
-                    FirstName: firstName,
-                    LastName: lastName,
-                    IdentityCartNumber: code,
-                    Gender: gender,
-                    Email: email,
-                    Phone: phone,
-                    Birthday: birthday,
-                    Province: province,
-                    District: district,
-                    Ward: ward,
-                    Address: address,
+                    CustomerId: customerId,
+                    Title: title,
+                    Content: content,
+                    AttachFiles: arrAttachment,
                     __RequestVerificationToken: token
                 }, function () {
                     X.F.setError("", !0);
@@ -1401,6 +1397,32 @@ X.Page.Feedback = {
         });
     },
 
+    view_attachment: function () {
+        $("[data-action=view-attachment]").off().on("click", function (e) {
+            e.preventDefault();
+            var feedbackId = $(this).data("feedback_id");
+
+            // Check data feedbackId length
+            if (feedbackId < 1) {
+                return !1;
+            }
+
+            // Get data
+            X.A.xhr("/feedback/ViewAttachment", !1,
+                {
+                    feedbackId: parseInt(feedbackId)
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Error return JSON
+                    if (X.F.isJSON(data)) {
+                        X.Thikbox.load(JSON.parse(data).message, "Error");
+                    }
+                    else {
+                        X.Thikbox.load(data, "Attachment"); // show result only
+                    }
+                });
+        });
+    },
 
     init: function () {
         let that = this;
@@ -1439,12 +1461,12 @@ X.Page.Feedback = {
             // if 'li' tag is over 3, client don't allow user upload                
             var liTag = $("ul#attach-files li").length;
             if (liTag + files.length > 3) {
-                X.Thikbox.load("just allow upload 3 files!");
+                X.Thikbox.load("just allow upload 3 files!", "Error");
                 return !1;
             }
 
             if (files.length > 3) {
-                X.ThikBox.load("just allow upload 3 files");
+                X.Thikbox.load("just allow upload 3 files", "Error");
                 return !1;
             }
 
@@ -1453,7 +1475,7 @@ X.Page.Feedback = {
             for (var i = 0; i < files.length; i++) {
                 // check file type
                 if (!X.Page.Feedback.check_attachment_file_type(files[i].name)) {
-                    X.ThikBox.load("Not allow upload this file type!");
+                    X.Thikbox.load("Not allow upload this file type!", "Error");
                     return !1;
                 }
                 totalFileSize += files[i].size;
@@ -1461,7 +1483,7 @@ X.Page.Feedback = {
 
             // check file size
             if (totalFileSize > 10485760) {
-                X.ThikBox.load("Total file size over 1MB");
+                X.Thikbox.load("Total file size over 10MB", "Error");
                 return !1;
             }
 

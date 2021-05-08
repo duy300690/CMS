@@ -10,6 +10,8 @@ namespace CMSRepository.Query
     {
         public int Id { get; private set; }
         public Nullable<int> CustomerId { get; private set; }
+        public string CustomerMemberCard { get; private set; }
+        public string CustomerName { get; private set; }
         public string Title { get; private set; }
         public string Content { get; private set; }
         public Nullable<System.DateTime> CreateDate { get; private set; }
@@ -17,7 +19,7 @@ namespace CMSRepository.Query
         public Nullable<System.DateTime> ModifiedDate { get; private set; }
         public Nullable<int> ModifiedBy { get; private set; }
         public byte Status { get; private set; }
-
+        public List<ViewAttachmentInfo> Attachments { get; private set; }
         public FeedbackInfo(int id
                             , int? customerId
                             , string title
@@ -42,6 +44,20 @@ namespace CMSRepository.Query
         public void SetId(int id)
         {
             Id = id;
+        }
+        public void SetAttachment(List<ViewAttachmentInfo> attachments)
+        {
+            Attachments = attachments;
+        }
+
+        public void SetCustomerName(string name)
+        {
+            CustomerName = name;
+        }
+
+        public void SetCustomerMemberCard(string code)
+        {
+            CustomerMemberCard = code;
         }
     }
 }

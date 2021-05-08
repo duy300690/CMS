@@ -1,0 +1,18 @@
+﻿﻿@using CMSWeb.Language
+
+@model List<CMSRepository.Query.ViewAttachmentInfo>
+<div id="download-attachment">
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <a href="@Url.Action("Download","Feedback", new { iden = item.Iden, feedbackId= ViewBag.FeedbackId})">
+                    @item.Name
+                    <i class="fas fa-download"></i>
+                </a>
+                <br>
+                @item.Created
+            </li>
+        }
+    </ul>
+</div>

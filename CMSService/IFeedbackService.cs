@@ -17,5 +17,10 @@ namespace CMSService
                                               byte? status,
                                               string sortColumn,
                                               string sortType);
+        int Create(FeedbackInfo feedback, int userId);
+        void SaveListAttachment(List<CMSRepository.Query.AttachmentInfo> attachments);
+        List<CMSRepository.Query.ViewAttachmentInfo> GetAttachmentFiles(int feedbackId);
+        CMSRepository.Query.DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId);
+
     }
 }

@@ -219,6 +219,7 @@
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\AttachmentInfo.cs" />
     <Compile Include="Query\CustomerInfo.cs" />
     <Compile Include="Query\EmployeeInfo.cs" />
     <Compile Include="Query\FeedbackInfo.cs" />
