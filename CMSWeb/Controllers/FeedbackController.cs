@@ -38,8 +38,7 @@ namespace CMSWeb.Controllers
                                 string toDate,
                                 byte? status)
         {
-            if (!SessionContext.IsAuthentication().Item1
-                || SessionContext.IsAuthentication().Item2 != CMSService.Secure.Roles.ADMIN)
+            if (!SessionContext.IsAuthentication().Item1)
                 return RedirectToAction("Index", "Login");
 
             int pageIndex = page ?? 1;
@@ -266,6 +265,37 @@ namespace CMSWeb.Controllers
             {
                 return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
             }
+        }
+
+        public ActionResult Detail(int id)
+        {
+            // Ajax detail
+            if (Request.IsAjaxRequest())
+            {
+                var data = _feedbackService.GetById(id, null);
+                FeedbackModel feedback = new FeedbackModel()
+                {
+                    Id = data.Id,
+                    CustomerId = data.CustomerId,
+                    Title = data.Title,
+                    Content = data.Content,
+                    CreateBy = data.CreateBy,
+                    CreateDate = data.CreateDate,
+                    ModifiedBy = data.ModifiedBy,
+                    ModifiedDate = data.ModifiedDate,
+                    Status = data.Status,
+                };
+                feedback.CustomerMemberCard = data.CustomerMemberCard;
+                feedback.CustomerName = data.CustomerName;
+
+                feedback.Attachments = new List<CMSRepository.Query.ViewAttachmentInfo>();
+                if (data.Attachments != null && data.Attachments.Any())
+                    feedback.Attachments = data.Attachments;
+
+                return PartialView("_DetailPartial", feedback);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

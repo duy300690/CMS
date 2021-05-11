@@ -147,6 +147,21 @@ namespace CMSWeb.Controllers
             return Json(XUtil.JsonDie(jsonDistrict, 1));
         }
 
+        [HttpPost]
+        public JsonResult GetWard(string provinceCode, string districtCode)
+        {
+            string strLocationJson = Util.Helpers.GetFileJsonLocation();
+            var dataLocation = Util.Helpers.ConvertJsonToObject<CityModel>(strLocationJson);
+
+            var district = dataLocation.FirstOrDefault(p => p.Code.Equals(provinceCode)).Districts;
+
+            var ward = district.FirstOrDefault(p => p.Id.Equals(districtCode)).Wards;
+            string jsonWard = XUtil.Object2Json(ward);
+            return Json(XUtil.JsonDie(jsonWard, 1));
+        }
+
+
+
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Create(EmployeeModel model)
         {

@@ -323,7 +323,7 @@ X.Page.Employee =
                                 $("#Ward").find('option').remove().end().append(optionWard);
                                 return !1;
                             }
-
+                            optionWard = '<option value="">--- Select Ward ---</option>';
                             $.each(districts, function (i, v) {
                                 if (v.Id === id) {
                                     let wards = v.Wards;
@@ -449,7 +449,7 @@ X.Page.Employee =
 
     edit: function () {
 
-        $("#popbox form #Province").off().on("change", function (e) {
+        $("#popbox form #Provinces").off().on("change", function (e) {
             e.preventDefault();
             let provinceCode = $(this).val();
 
@@ -489,28 +489,53 @@ X.Page.Employee =
                         $("#District").prop("disabled", !1);
                         $("#District").find('option').remove().end().append(option);
 
-                        $("#District").off().on('change', function (e) {
-                            e.preventDefault();
-                            let id = $(this).val();
-                            if (id === '' || X.F.is(id, "undefined")) {
-                                $("#Ward").prop("disabled", !0);
-                                $("#Ward").find('option').remove().end().append(optionWard);
-                                return !1;
-                            }
+                        $("#Ward").prop("disabled", !0);
+                        $("#Ward").find('option').remove().end().append(optionWard);
+                    }
+                    else {
+                        X.F.setError(message);
+                    }
+                })
+            return !1;
+        });
 
-                            $.each(districts, function (i, v) {
-                                if (v.Id === id) {
-                                    let wards = v.Wards;
-                                    $.each(wards, function (i, item) {
-                                        optionWard += `<option value="${item.Id}">${item.Name}</option>`;
-                                    });
+        $("#popbox form #District").off().on("change", function (e) {
+            e.preventDefault();
+            let districtCode = $(this).val()
+                , provinceCode = $("#Provinces option:selected").val();
+            X.A.xhr('/Employee/GetWard', !0,
+                {
+                    provinceCode: provinceCode,
+                    districtCode: districtCode
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
 
-                                    $("#Ward").prop("disabled", !1);
-                                    $("#Ward").find('option').remove().end().append(optionWard);
-                                    return !1;
-                                }
-                            });
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+                    if (code == 1) {
+
+                        let listWard = JSON.parse(message),
+                            option = '<option value="">--- Select Ward ---</option>';
+
+                        if (X.F.is(listWard, "undefined")) {
+                            $("#Ward").prop("disabled", !0);
+                            $("#Ward").find('option').remove().end().append(option);
+                            return !1;
+                        }
+
+                        let wards = [];
+                        $.each(listWard, function (i, item) {
+                            option += `<option value="${item.Id}">${item.Name}</option>`;
+                            wards.push(item);
                         });
+
+                        $("#Ward").prop("disabled", !1);
+                        $("#Ward").find('option').remove().end().append(option);
                     }
                     else {
                         X.F.setError(message);
@@ -789,7 +814,7 @@ X.Page.Customer = {
                                 $("#Ward").find('option').remove().end().append(optionWard);
                                 return !1;
                             }
-
+                            optionWard = '<option value="">--- Select Ward ---</option>';
                             $.each(districts, function (i, v) {
                                 if (v.Id === id) {
                                     let wards = v.Wards;
@@ -891,8 +916,52 @@ X.Page.Customer = {
     },
 
     edit: function () {
+        $("#popbox form #District").off().on("change", function (e) {
+            e.preventDefault();
+            let districtCode = $(this).val()
+                , provinceCode = $("#Provinces option:selected").val();
+            X.A.xhr('/Employee/GetWard', !0,
+                {
+                    provinceCode: provinceCode,
+                    districtCode: districtCode
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
 
-        $("#popbox form #Province").off().on("change", function (e) {
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+                    if (code == 1) {
+
+                        let listWard = JSON.parse(message),
+                            option = '<option value="">--- Select Ward ---</option>';
+
+                        if (X.F.is(listWard, "undefined")) {
+                            $("#Ward").prop("disabled", !0);
+                            $("#Ward").find('option').remove().end().append(option);
+                            return !1;
+                        }
+
+                        let wards = [];
+                        $.each(listWard, function (i, item) {
+                            option += `<option value="${item.Id}">${item.Name}</option>`;
+                            wards.push(item);
+                        });
+
+                        $("#Ward").prop("disabled", !1);
+                        $("#Ward").find('option').remove().end().append(option);
+                    }
+                    else {
+                        X.F.setError(message);
+                    }
+                })
+            return !1;
+        });
+
+        $("#popbox form #Provinces").off().on("change", function (e) {
             e.preventDefault();
             let provinceCode = $(this).val();
 
@@ -932,28 +1001,8 @@ X.Page.Customer = {
                         $("#District").prop("disabled", !1);
                         $("#District").find('option').remove().end().append(option);
 
-                        $("#District").off().on('change', function (e) {
-                            e.preventDefault();
-                            let id = $(this).val();
-                            if (id === '' || X.F.is(id, "undefined")) {
-                                $("#Ward").prop("disabled", !0);
-                                $("#Ward").find('option').remove().end().append(optionWard);
-                                return !1;
-                            }
-
-                            $.each(districts, function (i, v) {
-                                if (v.Id === id) {
-                                    let wards = v.Wards;
-                                    $.each(wards, function (i, item) {
-                                        optionWard += `<option value="${item.Id}">${item.Name}</option>`;
-                                    });
-
-                                    $("#Ward").prop("disabled", !1);
-                                    $("#Ward").find('option').remove().end().append(optionWard);
-                                    return !1;
-                                }
-                            });
-                        });
+                        $("#Ward").prop("disabled", !0);
+                        $("#Ward").find('option').remove().end().append(optionWard);
                     }
                     else {
                         X.F.setError(message);
@@ -1422,7 +1471,7 @@ X.Page.Feedback = {
                     }
                 });
         });
-    },
+    }, 
 
     init: function () {
         let that = this;
@@ -1443,6 +1492,22 @@ X.Page.Feedback = {
                     X.Thikbox.load(data, "Create", function () {
                         that.create();
                     });
+                });
+        });
+
+        /*--- 3. Detail buttons */
+        $("[data-action=view]").off().on("click", function (e) {
+            e.preventDefault();
+
+            let id = $(this).attr("data-id");
+            // Get ajax create form
+            X.A.xhr("/feedback/detail", !1, {
+                id: id
+            })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, "Detail", function () { });
                 });
         });
     },

@@ -59,6 +59,33 @@ namespace CMSService.Implementation
             return Tuple.Create(listFeedback, 0);
         }
 
+        public FeedbackInfo GetById(int id, byte? status)
+        {
+            if (id < 1) throw new ArgumentNullException("Id");
+
+            var data = _feedbackRepository.GetById(id, status);
+            if (data == null) return null;
+            FeedbackInfo feedback = new FeedbackInfo(
+                       data.Id,
+                       data.CustomerId,
+                       data.Title,
+                       data.Content,
+                       data.CreateDate,
+                       data.CreateBy,
+                       data.ModifiedDate,
+                       data.ModifiedBy,
+                       data.Status
+                       );
+
+            feedback.SetCustomerMemberCard(data.CustomerMemberCard);
+            feedback.SetCustomerName(data.CustomerName);
+
+            if (data.Attachments != null && data.Attachments.Any())
+                feedback.SetAttachment(data.Attachments);
+
+            return feedback;
+        }
+
         public int Create(FeedbackInfo feedback, int userId)
         {
             if (feedback is null)

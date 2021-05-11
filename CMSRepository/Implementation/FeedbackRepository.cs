@@ -129,7 +129,8 @@ namespace CMSRepository.Implementation
             if (feedback == null) throw new ArgumentNullException("feedback");
 
             var feedbackInfo = feedback.FirstOrDefault();
-            return new FeedbackInfo(feedbackInfo.Id
+
+            FeedbackInfo data = new FeedbackInfo(feedbackInfo.Id
                                     , feedbackInfo.CustomerId
                                     , feedbackInfo.Title
                                     , feedbackInfo.Content
@@ -138,6 +139,28 @@ namespace CMSRepository.Implementation
                                     , feedbackInfo.ModifiedDate
                                     , feedbackInfo.ModifiedBy
                                     , feedbackInfo.Status);
+
+            data.SetCustomerMemberCard(feedbackInfo.Customer.CustomerCard);
+            data.SetCustomerName($"{feedbackInfo.Customer.FirstName} {feedbackInfo.Customer.LastName}");
+
+            if (feedbackInfo.FeedbackAttachments != null && feedbackInfo.FeedbackAttachments.Any())
+            {
+                List<ViewAttachmentInfo> attachments = new List<ViewAttachmentInfo>();
+                foreach (var item in feedbackInfo.FeedbackAttachments)
+                {
+                    attachments.Add(new ViewAttachmentInfo
+                    {
+                        Iden = item.Iden ?? new Guid(),
+                        Name = item.Name,
+                        MimeType = item.MimeType,
+                        Created = item.CreateDate ?? new DateTime()
+                    });
+                }
+                data.SetAttachment(attachments);
+            }
+
+
+            return data;
         }
 
         public void Save(FeedbackInfo feedback, int userId)

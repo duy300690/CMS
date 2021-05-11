@@ -1996,6 +1996,7 @@
     <Content Include="Views\Feedback\_FeedbackGrid.cshtml" />
     <Content Include="Views\Feedback\_CreatePartial.cshtml" />
     <Content Include="Views\Feedback\_AttachmentGridPartial.cshtml" />
+    <Content Include="Views\Feedback\_DetailPartial.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

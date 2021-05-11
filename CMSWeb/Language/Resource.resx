@@ -135,6 +135,9 @@
   <data name="Check" xml:space="preserve">
     <value>Check</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Complete" xml:space="preserve">
     <value>Complete</value>
   </data>

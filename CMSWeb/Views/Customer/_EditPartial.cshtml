@@ -84,7 +84,7 @@
         </div>
         <div class="form-group col-md-6">
             <label>@EmployeeResource.Province / @EmployeeResource.City</label>
-            @Html.DropDownListFor(m => m.Province, (IEnumerable<SelectListItem>)ViewBag.ListProvince, EmployeeResource.SelectProvince, new { @class = "form-control", required = "" })
+            @Html.DropDownListFor(m => m.Province, (IEnumerable<SelectListItem>)ViewBag.ListProvince, EmployeeResource.SelectProvince, new {id= "Provinces", @class = "form-control", required = "" })
         </div>
     </div>
     <div class="form-row">
