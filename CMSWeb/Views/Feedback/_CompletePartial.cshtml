@@ -1,0 +1,32 @@
+﻿@model CMSWeb.Models.FeedbackModel
+@using CMSWeb.Language
+@using CMSWeb.Util
+
+
+@using (Html.BeginForm("ChangeToComplete", "Feedback", FormMethod.Post, new { id = "create_feedback_form", role = "form", autocomplete = "off", onsubmit = "return !1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@FeedbackResource.Title</label>
+        <label class="col-sm-8 form-control">@Model.Title</label>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">@CustomerResource.CustomerName</label>
+        <label class="col-sm-8 form-control">@Model.CustomerName</label>
+    </div>
+
+    <div class="form-group row">
+        @Html.TextAreaFor(m => m.Content, new { @class = "form-control", rows = "5", maxlength = "500", @readonly = "" })
+    </div>
+
+    <div class="form-group row">
+        <textarea class="form-control" rows="5" maxlength="500" id="solution" name="solution" required="" placeholder="@FeedbackResource.Solution"></textarea>
+    </div>
+
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary btn-ok yes">@Resource.Complete</button>	&nbsp;
+        <button class="btn btn-secondary" data-dismiss="modal">@Resource.Close</button>
+    </div>
+}

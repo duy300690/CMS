@@ -117,7 +117,7 @@ namespace CMSWeb.Controllers
                 var userInfo = _userService.GetUserById(id, false);
                 if (userInfo == null) return Json(XUtil.JsonDie(UserResource.UserNotFound, statusCode));
 
-                _userService.Active(id);
+                _userService.Active(id);               
 
                 statusCode = 1;
                 statusMessage = Request.Url.AbsolutePath + "#user" + id;

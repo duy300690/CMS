@@ -14,6 +14,7 @@ namespace CMSWeb.Models
         public string CustomerName { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public string Solution { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> CreateBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

@@ -29,7 +29,7 @@ namespace CMSRepository
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<FeedbackAttachment> FeedbackAttachments { get; set; }
-        public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Solution> Solutions { get; set; }
     }
 }

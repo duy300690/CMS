@@ -10,13 +10,13 @@ namespace CMSService
     public interface ICustomerService
     {
         Tuple<List<CustomerInfo>, int> GetListCustomer(string query
-                                                    , string provinceCode
-                                                    , string districtId
-                                                    , int pageIndex
-                                                    , int pageSize
-                                                    , bool? status
-                                                    , string sortColumn
-                                                    , string sortType);
+                                                  , string provinceCode
+                                                  , string districtId
+                                                  , int pageIndex
+                                                  , int pageSize
+                                                  , bool? status
+                                                  , string sortColumn
+                                                  , string sortType);
         CustomerInfo GetById(int id, bool? status);
         CustomerInfo GetByCustomerCard(string customerCard, bool? status);
         int Create(CustomerInfo customer, int userId);

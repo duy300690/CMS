@@ -143,6 +143,9 @@ namespace CMSRepository.Implementation
             data.SetCustomerMemberCard(feedbackInfo.Customer.CustomerCard);
             data.SetCustomerName($"{feedbackInfo.Customer.FirstName} {feedbackInfo.Customer.LastName}");
 
+            if (feedbackInfo.Solutions != null && feedbackInfo.Solutions.FirstOrDefault() != null)
+                data.SetSolution(feedbackInfo.Solutions.FirstOrDefault().solutions);
+
             if (feedbackInfo.FeedbackAttachments != null && feedbackInfo.FeedbackAttachments.Any())
             {
                 List<ViewAttachmentInfo> attachments = new List<ViewAttachmentInfo>();
@@ -281,6 +284,48 @@ namespace CMSRepository.Implementation
                         FileContent = p.FileContent
                     }).FirstOrDefault();
 
+        }
+
+        public void SaveSolution(SolutionInfo solution, int userId)
+        {
+            if (solution is null)
+            {
+                throw new ArgumentNullException(nameof(solution));
+            }
+
+            Solution model = new Solution()
+            {
+                Id = solution.Id,
+                FeedbackId = solution.FeedbackId,
+                UserSolveId = solution.UserSolveId,
+                solutions = solution.Solutions,
+                CreateBy = userId,
+                ModifiedDate = DateTime.Now,
+                Status = true
+            };
+
+            if (string.IsNullOrEmpty(model.solutions)) throw new ArgumentNullException("Solution null");
+
+            if (model.Id == 0)
+            {
+                model.CreateDate = DateTime.Now;
+                model.CreateBy = userId;
+
+                _context.Solutions.Add(model);
+                _context.SaveChanges();
+                solution.SetId(model.Id);
+
+                if (solution.Id == 0) throw new InvalidOperationException("Can't create solution");
+            }
+            else
+            {
+                Solution solutions = _context.Solutions.FirstOrDefault(p => p.Id == model.Id);
+
+                solutions.ModifiedBy = userId;
+                _context.Entry(solutions).CurrentValues.SetValues(solutions);
+
+                _context.SaveChanges();
+            }
         }
     }
 }

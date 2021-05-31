@@ -41,6 +41,7 @@
                         <i class="fas fa-sort"></i>
                     }
                 </th>
+                <th>@EmployeeResource.Address</th>
                 <th>
                     <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.customerList[3]}_{ViewBag.SortAsc}")">@Resource.ModifiedDate</a>
                     @if (CMSRepository.SortList.customerList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
@@ -63,6 +64,7 @@
                     <td data-title="@UserResource.Fullname">@item.FullName</td>
                     <td data-title="@CustomerResource.MemberCard">@item.CustomerCard</td>
                     <td data-title="@UserResource.Email">@item.Email</td>
+                    <td data-title="@EmployeeResource.Address">@Helpers.DisplayProvince(item.Province)</td>
                     <td title="@Resource.ModifiedDate">
                         @if (item.ModifiedDate.HasValue)
                         {

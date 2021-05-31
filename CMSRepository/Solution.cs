@@ -22,7 +22,7 @@ namespace CMSRepository
         public Nullable<int> CreateBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
-        public byte Status { get; set; }
+        public bool Status { get; set; }
     
         public virtual Feedback Feedback { get; set; }
     }

@@ -25,5 +25,6 @@ namespace CMSRepository
         void SaveListAttachment(List<AttachmentInfo> attachments);
         List<ViewAttachmentInfo> GetAttachmentFiles(int feedbackId);
         DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId);
+        void SaveSolution(SolutionInfo solution, int userId);
     }
 }

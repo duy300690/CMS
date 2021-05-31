@@ -727,12 +727,14 @@ X.Page.Customer = {
             , btnSbm = $("[type=submit]", frm)
             , query = $.trim($("[name=query]", frm).val())
             , status = $.trim($("[name=status]", frm).val())
+            , province = $.trim($("[name=Province] option:selected", frm).val())
             , urlQuery = location.pathname + "?"
             , urlParams = {};
 
         (query !== "") ? urlParams.query = X.F.doKeywordFilter(query) : "";
         (parseInt(status) >= 0) ? urlParams.status = status : "";
         (sortColumnName !== "") ? urlParams.sortColumnName = sortColumnName : "";
+        (province !== "") ? urlParams.province = province : "";
 
         urlQuery += $.param(urlParams);
         $("[name=query]", frm).val(urlParams.query);
@@ -1471,7 +1473,59 @@ X.Page.Feedback = {
                     }
                 });
         });
-    }, 
+    },
+
+    DoneSolution: function () {
+        $("#popbox form").off().on("submit", function (e) {
+            e.preventDefault();
+
+            let frm = $(this)
+                , token = $("[name=__RequestVerificationToken]", frm).val()
+                , id = parseInt($("[name=Id]", frm).val())
+                , solution = $.trim($("[name=solution]", frm).val())
+                , btnSbm = $("[type=submit]", frm);
+
+            if (solution === "") {
+                X.F.setError("Type solution", !1);
+                return !1;
+            }
+
+            if (id < 1) {
+                X.F.setError("Please check feedbeck id", !1);
+                return !1;
+            }
+
+            X.A.xhr(frm.prop("action"), !0,
+                {
+                    id: id,
+                    solution: solution,
+                    __RequestVerificationToken: token
+                }, function () {
+                    X.F.setError("", !0);
+                    btnSbm.prop("disabled", !0).addClass("disabled");
+                })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+
+                    var data = JSON.parse(data),
+                        message = data.message,
+                        code = parseInt(data.code);
+
+                    // Success - message will be URL to reload
+
+                    if (code == 1) {
+                        X.Thikbox.remove();
+                        X.Page.getAjaxList(window.location.href, function () { X.F.doEffect($("#" + message.split("#").pop())) })
+                    }
+                    else {
+                        X.F.setError(message, !1);
+                        btnSbm.prop("disabled", !1).removeClass("disabled");
+                    }
+                })
+            return !1;
+        });
+    },
 
     init: function () {
         let that = this;
@@ -1508,6 +1562,42 @@ X.Page.Feedback = {
                     // Check session
                     X.F.checkSession(xhr);
                     X.Thikbox.load(data, "Detail", function () { });
+                });
+        });
+
+        /*--- 4. Pending buttons */
+        $("[data-action=change_pending]").off().on("click", function (e) {
+            e.preventDefault();
+
+            let id = $(this).attr("data-id");
+            // Get ajax create form
+            X.A.xhr("/feedback/ChangeToPending", !1, {
+                id: id
+            })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, "Ation", function () {
+                        X.Page.setEnableDisableConfirm();
+                    });
+                });
+        });
+
+        /*--- 5. Complete buttons */
+        $("[data-action=change_complete]").off().on("click", function (e) {
+            e.preventDefault();
+
+            let id = $(this).attr("data-id");
+            // Get ajax create form
+            X.A.xhr("/feedback/ChangeToComplete", !1, {
+                id: id
+            })
+                .done(function (data, textStatus, xhr) {
+                    // Check session
+                    X.F.checkSession(xhr);
+                    X.Thikbox.load(data, "Ation", function () {
+                        X.Page.Feedback.DoneSolution();
+                    });
                 });
         });
     },

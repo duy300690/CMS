@@ -94,7 +94,6 @@ D:\Projects\CMS\CMSWeb\bin\System.Web.WebPages.xml
 D:\Projects\CMS\CMSWeb\bin\System.Web.WebPages.Deployment.xml
 D:\Projects\CMS\CMSWeb\bin\System.Web.WebPages.Razor.xml
 D:\Projects\CMS\CMSWeb\bin\Antlr3.Runtime.pdb
-D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.csprojAssemblyReference.cache
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.Language.EmployeeResource.resources
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.Language.Resource.resources
 D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.Language.UserResource.resources
@@ -130,3 +129,4 @@ D:\Projects\CMS\CMSWeb\bin\pt-BR\Hangfire.Core.resources.dll
 D:\Projects\CMS\CMSWeb\bin\pt-PT\Hangfire.Core.resources.dll
 D:\Projects\CMS\CMSWeb\bin\zh\Hangfire.Core.resources.dll
 D:\Projects\CMS\CMSWeb\bin\zh-TW\Hangfire.Core.resources.dll
+D:\Projects\CMS\CMSWeb\obj\Debug\CMSWeb.csproj.AssemblyReference.cache

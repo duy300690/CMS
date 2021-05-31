@@ -14,6 +14,7 @@ namespace CMSRepository.Query
         public string CustomerName { get; private set; }
         public string Title { get; private set; }
         public string Content { get; private set; }
+        public string Solution { get; private set; }
         public Nullable<System.DateTime> CreateDate { get; private set; }
         public Nullable<int> CreateBy { get; private set; }
         public Nullable<System.DateTime> ModifiedDate { get; private set; }
@@ -59,5 +60,11 @@ namespace CMSRepository.Query
         {
             CustomerMemberCard = code;
         }
+
+        public void SetSolution(string solution)
+        {
+            Solution = solution;
+        }
+
     }
 }

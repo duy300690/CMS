@@ -21,7 +21,7 @@ namespace CMSWeb.Controllers
         private readonly ICustomerService _customerService;
 
         private const int PageSizeDefault = SystemSetting.PageSizeDefault;
-        private string tempFolder = SystemSetting.TempFolder;
+        private const string tempFolder = SystemSetting.TempFolder;
 
         public FeedbackController(IFeedbackService feedbackService
                                   , ICustomerService customerService)
@@ -205,7 +205,7 @@ namespace CMSWeb.Controllers
                                                             , model.Status
                                                             );
 
-                    int feedbackId = _feedbackService.Create(feedback, SessionContext.GetUserLogin().Id);
+                    int feedbackId = _feedbackService.Save(feedback, SessionContext.GetUserLogin().Id);
 
                     if (feedbackId == 0)
                         return Json(XUtil.JsonDie(FeedbackResource.FeedbackError, statusCode));
@@ -287,6 +287,7 @@ namespace CMSWeb.Controllers
                 };
                 feedback.CustomerMemberCard = data.CustomerMemberCard;
                 feedback.CustomerName = data.CustomerName;
+                feedback.Solution = data.Solution;
 
                 feedback.Attachments = new List<CMSRepository.Query.ViewAttachmentInfo>();
                 if (data.Attachments != null && data.Attachments.Any())
@@ -323,6 +324,105 @@ namespace CMSWeb.Controllers
         {
             var attachment = _feedbackService.GetAttachmentByIden(iden, feedbackId);
             return File(attachment.FileContent, System.Net.Mime.MediaTypeNames.Application.Octet, attachment.Name);
+        }
+
+        public ActionResult ChangeToPending(int id)
+        {
+            // Ajax
+            if (Request.IsAjaxRequest())
+            {
+                ViewBag.FeedbackId = id;
+                return PartialView("_PendingPartial");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult ChangeToPendingPost(int id)
+        {
+            try
+            {
+                int statusCode = 0;
+                string statusMessage = string.Empty;
+
+                if (id < 1) return Json(XUtil.JsonDie(FeedbackResource.FeedbackNotFound, statusCode));
+
+                var feedbackInfo = _feedbackService.GetById(id, null);
+                if (feedbackInfo == null) return Json(XUtil.JsonDie(FeedbackResource.FeedbackNotFound, statusCode));
+                feedbackInfo.SetStatus(1);
+
+                _feedbackService.Save(feedbackInfo, SessionContext.GetUserLogin().Id);
+
+                statusCode = 1;
+                statusMessage = Request.Url.AbsolutePath + "#feedback" + id;
+
+                return Json(XUtil.JsonDie(statusMessage, statusCode));
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
+        }
+
+        public ActionResult ChangeToComplete(int id)
+        {
+            // Ajax
+            if (Request.IsAjaxRequest())
+            {
+                var data = _feedbackService.GetById(id, null);
+                FeedbackModel feedback = new FeedbackModel()
+                {
+                    Id = data.Id,
+                    CustomerId = data.CustomerId,
+                    Title = data.Title,
+                    Content = data.Content,
+                    CreateBy = data.CreateBy,
+                    CreateDate = data.CreateDate,
+                    ModifiedBy = data.ModifiedBy,
+                    ModifiedDate = data.ModifiedDate,
+                    Status = data.Status,
+                };
+                feedback.CustomerName = data.CustomerName;
+
+                return PartialView("_CompletePartial", feedback);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult ChangeToComplete(int id, string solution)
+        {
+            try
+            {
+                int statusCode = 0;
+                if (id < 1) return Json(XUtil.JsonDie(FeedbackResource.FeedbackNotFound, statusCode));
+
+                var feedbackInfo = _feedbackService.GetById(id, null);
+                if (feedbackInfo == null) return Json(XUtil.JsonDie(FeedbackResource.FeedbackNotFound, statusCode));
+                feedbackInfo.SetStatus(2);
+
+                _feedbackService.Save(feedbackInfo, SessionContext.GetUserLogin().Id);
+
+                // Save to Solution
+                CMSService.Query.SolutionInfo solutionInfo = new CMSService.Query.SolutionInfo(0
+                                                                                            , id
+                                                                                            , SessionContext.GetUserLogin().Id
+                                                                                            , solution
+                                                                                            , SessionContext.GetUserLogin().Id
+                                                                                            , SessionContext.GetUserLogin().Id);
+
+                _feedbackService.SaveSolution(solutionInfo, SessionContext.GetUserLogin().Id);
+                statusCode = 1;
+                string statusMessage = Request.Url.AbsolutePath + "#feedback" + id;
+
+                return Json(XUtil.JsonDie(statusMessage, statusCode));
+            }
+            catch (Exception ex)
+            {
+                return Json(XUtil.JsonDie(ex.Message, (int)HttpStatusCode.InternalServerError));
+            }
         }
     }
 }

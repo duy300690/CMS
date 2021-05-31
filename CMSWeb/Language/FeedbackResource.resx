@@ -132,6 +132,9 @@
   <data name="ListFeedback" xml:space="preserve">
     <value>List feedback</value>
   </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Solution</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>

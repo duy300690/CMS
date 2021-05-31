@@ -223,6 +223,7 @@
     <Compile Include="Query\CustomerInfo.cs" />
     <Compile Include="Query\EmployeeInfo.cs" />
     <Compile Include="Query\FeedbackInfo.cs" />
+    <Compile Include="Query\SolutionInfo.cs" />
     <Compile Include="Query\UserInfo.cs" />
     <Compile Include="Definition\SortList.cs" />
     <Compile Include="Solution.cs">

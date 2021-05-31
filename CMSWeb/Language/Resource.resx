@@ -159,6 +159,9 @@
   <data name="Displaying" xml:space="preserve">
     <value>Displaying</value>
   </data>
+  <data name="DoNoReplyEmailDisplayName" xml:space="preserve">
+    <value>CMS</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
@@ -204,11 +207,17 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="SureComplete" xml:space="preserve">
+    <value>Do you want to change to complete?</value>
+  </data>
   <data name="SureDisable" xml:space="preserve">
     <value>Are you sure you want to disable?</value>
   </data>
   <data name="SureEnable" xml:space="preserve">
     <value>Are you sure you want to enable?</value>
+  </data>
+  <data name="SurePending" xml:space="preserve">
+    <value>Do you want to change to pending?</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

@@ -5,6 +5,13 @@
 
 @if (Model.Any())
 {
+
+    <div>
+        <span class="pad3 bg-danger text-white">@Resource.New</span>
+        <span class="pad3 bg-warning text-white">@Resource.Pending</span>
+        <span class="pad3 bg-success text-white">@Resource.Complete</span>
+    </div>
+    <hr />
     <table class="table table-bordered table-striped table-hover responsive-table">
         <thead class="thead-light">
             <tr>
@@ -43,7 +50,7 @@
                     }
                 </th>
                 <th>
-                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[3]}_{ViewBag.SortAsc}")">@FeedbackResource.Status</a>
+                    <a href="#" data-action="sort" data-field="@($"{CMSRepository.SortList.feedbackList[3]}_{ViewBag.SortAsc}")">@Resource.Action</a>
                     @if (CMSRepository.SortList.feedbackList[3].ToLower().Equals(ViewBag.CurrentSortField.ToLower()))
                     {
                         @(ViewBag.SortAsc.ToLower().Equals("asc") ? Html.Raw("<i class='fas fa-sort-amount-down-alt'></i>") : Html.Raw("<i class='fas fa-sort-amount-down'></i>"))
@@ -53,13 +60,29 @@
                         <i class="fas fa-sort"></i>
                     }
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
 
             @foreach (var item in Model)
             {
-                <tr id="feedback@(item.Id)">
+                string background = string.Empty;
+                if (item.Status == 1)
+                {
+                    background = "background-warning";
+                }
+                else if (item.Status == 0)
+                {
+                    background = "background-danger";
+                }
+                else if (item.Status == 2)
+                {
+                    background = "background-success";
+                }
+
+
+                <tr id="feedback@(item.Id)" class="@background">
                     <td>@item.CustomerMemberCard</td>
                     <td>@item.CustomerName</td>
                     <td data-title="@FeedbackResource.Title">
@@ -72,41 +95,33 @@
                         }
                     </td>
                     <td title="@FeedbackResource.CreateDate">
-                        @if (item.ModifiedDate.HasValue)
-                        {
-                            @Html.Raw(Helpers.FormatDisplayDateTime(item.ModifiedDate.Value));
-                        }
-                        else if (item.CreateDate.HasValue)
-                        {
-                            @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
-                        }
+                        @Html.Raw(Helpers.FormatDisplayDateTime(item.CreateDate.Value));
                     </td>
                     <td data-title="@FeedbackResource.Status">
-                        <a class="btn btn-info btn-sm mr-2 my-1"
-                           href="#" data-action="view" data-id="@item.Id">
-                            @Resource.Detail
-                        </a>
                         @if (item.Status == 0)
                         {
-                            <a class="btn btn-outline-danger btn-sm mr-2 my-1"
-                               href="#" data-action="new" data-id="@item.Id">
-                                @Resource.New
+                            <a class="btn btn-warning btn-sm mr-2 my-1"
+                               href="#" data-action="change_pending" data-id="@item.Id">
+                                @Resource.Pending
+                            </a>
+                            <a class="btn btn-success btn-sm mr-2 my-1"
+                               href="#" data-action="change_complete" data-id="@item.Id">
+                                @Resource.Complete
                             </a>
                         }
                         else if (item.Status == 1)
                         {
-                            <a class="btn btn-outline-warning btn-sm mr-2 my-1"
-                               href="#" data-action="pending" data-id="@item.Id">
-                                @Resource.Pending
-                            </a>
-                        }
-                        else if (item.Status == 2)
-                        {
-                            <a class="btn btn-outline-success btn-sm mr-2 my-1"
-                               href="#" data-action="complete" data-id="@item.Id">
+                            <a class="btn btn-success btn-sm mr-2 my-1"
+                               href="#" data-action="change_complete" data-id="@item.Id">
                                 @Resource.Complete
                             </a>
                         }
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm mr-2 my-1"
+                           href="#" data-action="view" data-id="@item.Id">
+                            @Resource.Detail
+                        </a>
                     </td>
                 </tr>
             }

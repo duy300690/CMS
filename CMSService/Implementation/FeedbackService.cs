@@ -79,6 +79,7 @@ namespace CMSService.Implementation
 
             feedback.SetCustomerMemberCard(data.CustomerMemberCard);
             feedback.SetCustomerName(data.CustomerName);
+            feedback.SetSolution(data.Solution);
 
             if (data.Attachments != null && data.Attachments.Any())
                 feedback.SetAttachment(data.Attachments);
@@ -86,7 +87,7 @@ namespace CMSService.Implementation
             return feedback;
         }
 
-        public int Create(FeedbackInfo feedback, int userId)
+        public int Save(FeedbackInfo feedback, int userId)
         {
             if (feedback is null)
             {
@@ -126,6 +127,20 @@ namespace CMSService.Implementation
         public CMSRepository.Query.DownloadAttachmentInfo GetAttachmentByIden(Guid iden, int feedbackId)
         {
             return _feedbackRepository.GetAttachmentByIden(iden, feedbackId);
+        }
+
+        public void SaveSolution(SolutionInfo solution, int userId)
+        {
+            if (string.IsNullOrEmpty(solution.Solutions)) throw new ArgumentNullException("Solution");
+
+            CMSRepository.Query.SolutionInfo solutionInfo = new CMSRepository.Query.SolutionInfo(
+                                                                solution.Id
+                                                                , solution.FeedbackId ?? 0
+                                                                , userId
+                                                                , solution.Solutions
+                                                                , userId
+                                                                , userId);
+            _feedbackRepository.SaveSolution(solutionInfo, userId);
         }
 
     }

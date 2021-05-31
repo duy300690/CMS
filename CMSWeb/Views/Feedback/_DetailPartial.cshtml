@@ -14,7 +14,7 @@
 
 <div class="form-group row">
     <label class="col-sm-4 col-form-label">@FeedbackResource.Title</label>
-    @Html.LabelFor(m => m.Title, new { @class = "col-sm-8 form-control" })
+    <label class="col-sm-8 form-control">@Model.Title</label>
 </div>
 <div id="attachmentContainer" class="form-group row">
     <div class="col-sm-12">
@@ -36,6 +36,14 @@
 <div class="form-group row">
     @Html.TextAreaFor(m => m.Content, new { @class = "form-control", rows = "5", maxlength = "500", @readonly = "" })
 </div>
+
+@if (!string.IsNullOrEmpty(Model.Solution))
+{
+    <hr />
+    <div class="form-group row">
+        @Html.TextAreaFor(m => m.Solution, new { @class = "form-control", rows = "5", maxlength = "500", @readonly = "" })
+    </div>
+}
 
 <div class="form-group text-center">
     <button class="btn btn-secondary" data-dismiss="modal">@Resource.Close</button>

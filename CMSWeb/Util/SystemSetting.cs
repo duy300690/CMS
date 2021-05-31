@@ -11,6 +11,6 @@ namespace CMSWeb.Util
         public const int PageSizeDefault = 10;
 
         public const int DefaultAge = 22;
-        public const string TempFolder = "~/Temp/";
+        public const string TempFolder = @"~/Temp/";
     }
 }

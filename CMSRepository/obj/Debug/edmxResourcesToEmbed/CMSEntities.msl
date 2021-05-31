@@ -78,21 +78,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Solutions">
-      <EntityTypeMapping TypeName="CMSModel.Solution">
-        <MappingFragment StoreEntitySet="Solutions">
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="solutions" ColumnName="solutions" />
-          <ScalarProperty Name="UserSolveId" ColumnName="UserSolveId" />
-          <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="CMSModel.User">
         <MappingFragment StoreEntitySet="User">
@@ -105,6 +90,21 @@
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Solutions">
+      <EntityTypeMapping TypeName="CMSModel.Solution">
+        <MappingFragment StoreEntitySet="Solutions">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="solutions" ColumnName="solutions" />
+          <ScalarProperty Name="UserSolveId" ColumnName="UserSolveId" />
+          <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -90,7 +90,7 @@
           <Property Name="CreateBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -204,7 +204,6 @@
           <EntitySet Name="Employees" EntityType="CMSModel.Employee" />
           <EntitySet Name="Feedbacks" EntityType="CMSModel.Feedback" />
           <EntitySet Name="FeedbackAttachments" EntityType="CMSModel.FeedbackAttachment" />
-          <EntitySet Name="Solutions" EntityType="CMSModel.Solution" />
           <EntitySet Name="Users" EntityType="CMSModel.User" />
           <AssociationSet Name="FK_Coment_Customer1" Association="CMSModel.FK_Coment_Customer1">
             <End Role="Customer" EntitySet="Customers" />
@@ -222,6 +221,7 @@
             <End Role="Feedback" EntitySet="Feedbacks" />
             <End Role="FeedbackAttachment" EntitySet="FeedbackAttachments" />
           </AssociationSet>
+          <EntitySet Name="Solutions" EntityType="CMSModel.Solution" />
           <AssociationSet Name="FK_Solutions_Coment" Association="CMSModel.FK_Solutions_Coment">
             <End Role="Feedback" EntitySet="Feedbacks" />
             <End Role="Solution" EntitySet="Solutions" />
@@ -307,21 +307,6 @@
           <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Feedback" Relationship="CMSModel.FK_FeedbackAttachment_Feedback" FromRole="FeedbackAttachment" ToRole="Feedback" />
         </EntityType>
-        <EntityType Name="Solution">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FeedbackId" Type="Int32" />
-          <Property Name="UserSolveId" Type="Int32" />
-          <Property Name="solutions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="Feedback" Relationship="CMSModel.FK_Solutions_Coment" FromRole="Solution" ToRole="Feedback" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -387,6 +372,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Solution">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FeedbackId" Type="Int32" />
+          <Property Name="UserSolveId" Type="Int32" />
+          <Property Name="solutions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Feedback" Relationship="CMSModel.FK_Solutions_Coment" FromRole="Solution" ToRole="Feedback" />
+        </EntityType>
         <Association Name="FK_Solutions_Coment">
           <End Type="CMSModel.Feedback" Role="Feedback" Multiplicity="0..1" />
           <End Type="CMSModel.Solution" Role="Solution" Multiplicity="*" />
@@ -482,21 +482,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Solutions">
-            <EntityTypeMapping TypeName="CMSModel.Solution">
-              <MappingFragment StoreEntitySet="Solutions">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="solutions" ColumnName="solutions" />
-                <ScalarProperty Name="UserSolveId" ColumnName="UserSolveId" />
-                <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CMSModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -509,6 +494,21 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Solutions">
+            <EntityTypeMapping TypeName="CMSModel.Solution">
+              <MappingFragment StoreEntitySet="Solutions">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="solutions" ColumnName="solutions" />
+                <ScalarProperty Name="UserSolveId" ColumnName="UserSolveId" />
+                <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

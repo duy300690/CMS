@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using System.Resources;
 using System.Security.Cryptography;
@@ -133,6 +134,14 @@ namespace CMSWeb.Util
                 MaxJsonLength = Int32.MaxValue
             };
             return serializer.Deserialize<List<T>>(json);
+        }
+
+        public static string DisplayProvince(string code)
+        {
+            string strLocationJson = GetFileJsonLocation();
+            var dataLocation = ConvertJsonToObject<CityModel>(strLocationJson);
+            return dataLocation.FirstOrDefault(x => x.Code.Equals(code)).Name;
+
         }
         public static string GetFileJsonLocation()
         {

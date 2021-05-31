@@ -31,8 +31,7 @@ namespace CMSWeb.Controllers
                                 int? page,
                                 byte? status)
         {
-            if (!SessionContext.IsAuthentication().Item1
-               || SessionContext.IsAuthentication().Item2 != CMSService.Secure.Roles.ADMIN)
+            if (!SessionContext.IsAuthentication().Item1)
                 return RedirectToAction("Index", "Login");
 
             int pageIndex = page ?? 1;

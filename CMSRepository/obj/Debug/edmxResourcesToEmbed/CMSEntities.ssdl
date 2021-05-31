@@ -85,7 +85,7 @@
     <Property Name="CreateBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
-    <Property Name="Status" Type="tinyint" Nullable="false" />
+    <Property Name="Status" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="User">
     <Key>

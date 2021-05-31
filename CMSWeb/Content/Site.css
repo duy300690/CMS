@@ -519,6 +519,10 @@ w320px {
     padding-left: 0 !important;
 }
 
+.pad3 {
+    padding: 3px;
+}
+
 
 /*Attachment*/
 .attachment-file {
@@ -597,4 +601,16 @@ w320px {
     white-space: nowrap;
     background-color: #28a745;
     transition: width .6s ease;
+}
+
+.background-warning {
+    background-color: #fcf8e3 !important;
+}
+
+.background-danger {
+    background-color: #f2dede !important;
+}
+
+.background-success {
+    background-color: #dff0d8 !important;
 }

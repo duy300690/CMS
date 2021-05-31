@@ -187,6 +187,15 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CMS.
+        /// </summary>
+        public static string DoNoReplyEmailDisplayName {
+            get {
+                return ResourceManager.GetString("DoNoReplyEmailDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -322,6 +331,15 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to change to complete?.
+        /// </summary>
+        public static string SureComplete {
+            get {
+                return ResourceManager.GetString("SureComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to disable?.
         /// </summary>
         public static string SureDisable {
@@ -336,6 +354,15 @@ namespace CMSWeb.Language {
         public static string SureEnable {
             get {
                 return ResourceManager.GetString("SureEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to change to pending?.
+        /// </summary>
+        public static string SurePending {
+            get {
+                return ResourceManager.GetString("SurePending", resourceCulture);
             }
         }
         

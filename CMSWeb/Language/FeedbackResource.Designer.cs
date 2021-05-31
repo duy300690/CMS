@@ -106,6 +106,15 @@ namespace CMSWeb.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Solution.
+        /// </summary>
+        public static string Solution {
+            get {
+                return ResourceManager.GetString("Solution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
