@@ -22,6 +22,11 @@ namespace CMSWeb
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                     "~/Scripts/chart/Chart.min.js",
+                     "~/Scripts/chart-area-demo.js",
+                     "~/Scripts/chart-pie-demo.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-bundle").Include(
                       "~/Scripts/bootstrap.bundle.min.js"));
 

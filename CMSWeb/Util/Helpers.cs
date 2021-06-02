@@ -183,20 +183,6 @@ namespace CMSWeb.Util
             return null;
         }
 
-        public static void DeleteTemporaryAttachmentsInBackgroundThread(string directoryPath, string filename)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            try
-            {
-                //HangFile
-                BackgroundJob.Enqueue(() => DeleteAttachment(directoryPath, filename));
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-            }
-        }
-
         private static void DeleteAttachment(string directoryPath, string filename)
         {
 
@@ -218,6 +204,20 @@ namespace CMSWeb.Util
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public static void DeleteTemporaryAttachmentsInBackgroundThread(string directoryPath, string filename)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            try
+            {
+                //HangFile
+                BackgroundJob.Enqueue(() => DeleteAttachment(directoryPath, filename));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
             }
         }
 
